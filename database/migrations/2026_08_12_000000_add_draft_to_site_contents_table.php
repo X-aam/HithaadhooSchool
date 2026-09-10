@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('site_contents', function (Blueprint $table) {
+            $table->json('draft')->nullable()->after('value');
+        });
+
+        // A section may now exist as a draft only (never published yet),
+        // so the published value must be allowed to be null.
+        Schema::table('site_contents', function (Blueprint $table) {
+            $table->json('value')->nullable()->change();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('site_contents', function (Blueprint $table) {
+            $table->dropColumn('draft');
+        });
+
+        Schema::table('site_contents', function (Blueprint $table) {
+            $table->json('value')->nullable(false)->change();
+        });
+    }
+};

@@ -1,0 +1,345 @@
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@plugin "@tailwindcss/typography";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Self-hosted Dhivehi (Thaana) font served from public/fonts.
+   WOFF2 first (smaller/faster), OTF as fallback for old browsers. */
+@font-face {
+    font-family: 'MV Waheed';
+    src:
+        url('/fonts/MVWaheed.woff2') format('woff2'),
+        url('/fonts/MVWaheed.otf') format('opentype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme inline {
+    --font-sans:
+        Instrument Sans, ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar-background);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+@layer utilities {
+    body,
+    html {
+        --font-sans:
+            'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+            'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+            'Noto Color Emoji';
+    }
+}
+
+:root {
+    --background: hsl(0 0% 100%);
+    --foreground: hsl(0 0% 3.9%);
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(0 0% 3.9%);
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: hsl(0 0% 3.9%);
+    --primary: hsl(0 0% 9%);
+    --primary-foreground: hsl(0 0% 98%);
+    --secondary: hsl(0 0% 92.1%);
+    --secondary-foreground: hsl(0 0% 9%);
+    --muted: hsl(0 0% 96.1%);
+    --muted-foreground: hsl(0 0% 45.1%);
+    --accent: hsl(0 0% 96.1%);
+    --accent-foreground: hsl(0 0% 9%);
+    --destructive: hsl(0 84.2% 60.2%);
+    --destructive-foreground: hsl(0 0% 98%);
+    --border: hsl(0 0% 92.8%);
+    --input: hsl(0 0% 89.8%);
+    --ring: hsl(0 0% 3.9%);
+    --chart-1: hsl(12 76% 61%);
+    --chart-2: hsl(173 58% 39%);
+    --chart-3: hsl(197 37% 24%);
+    --chart-4: hsl(43 74% 66%);
+    --chart-5: hsl(27 87% 67%);
+    --radius: 0.5rem;
+    --sidebar-background: hsl(0 0% 98%);
+    --sidebar-foreground: hsl(240 5.3% 26.1%);
+    --sidebar-primary: hsl(0 0% 10%);
+    --sidebar-primary-foreground: hsl(0 0% 98%);
+    --sidebar-accent: hsl(0 0% 94%);
+    --sidebar-accent-foreground: hsl(0 0% 30%);
+    --sidebar-border: hsl(0 0% 91%);
+    --sidebar-ring: hsl(217.2 91.2% 59.8%);
+    --sidebar: hsl(0 0% 98%);
+}
+
+.dark {
+    --background: hsl(0 0% 3.9%);
+    --foreground: hsl(0 0% 98%);
+    --card: hsl(0 0% 3.9%);
+    --card-foreground: hsl(0 0% 98%);
+    --popover: hsl(0 0% 3.9%);
+    --popover-foreground: hsl(0 0% 98%);
+    --primary: hsl(0 0% 98%);
+    --primary-foreground: hsl(0 0% 9%);
+    --secondary: hsl(0 0% 14.9%);
+    --secondary-foreground: hsl(0 0% 98%);
+    --muted: hsl(0 0% 16.08%);
+    --muted-foreground: hsl(0 0% 63.9%);
+    --accent: hsl(0 0% 14.9%);
+    --accent-foreground: hsl(0 0% 98%);
+    --destructive: hsl(0 84% 60%);
+    --destructive-foreground: hsl(0 0% 98%);
+    --border: hsl(0 0% 14.9%);
+    --input: hsl(0 0% 14.9%);
+    --ring: hsl(0 0% 83.1%);
+    --chart-1: hsl(220 70% 50%);
+    --chart-2: hsl(160 60% 45%);
+    --chart-3: hsl(30 80% 55%);
+    --chart-4: hsl(280 65% 60%);
+    --chart-5: hsl(340 75% 55%);
+    --sidebar-background: hsl(0 0% 7%);
+    --sidebar-foreground: hsl(0 0% 95.9%);
+    --sidebar-primary: hsl(360, 100%, 100%);
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+    --sidebar-accent: hsl(0 0% 15.9%);
+    --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+    --sidebar-border: hsl(0 0% 15.9%);
+    --sidebar-ring: hsl(217.2 91.2% 59.8%);
+    --sidebar: hsl(240 5.9% 10%);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+/* ============================================================
+   School site — brand palette, Thaana font, RTL & motion
+   ============================================================ */
+
+@theme inline {
+    /* Dhivehi (Thaana) type. 'MV Waheed' is self-hosted (@font-face above),
+       so every visitor gets it regardless of what's installed locally; the
+       remaining families are graceful fallbacks. */
+    --font-thaana: 'MV Waheed', 'MV Elaaf Normal', 'Faruma', 'A_Faruma',
+        'MV Dhivehi', 'Noto Sans Thaana', ui-sans-serif, sans-serif;
+
+    --color-brand: var(--brand);
+    --color-brand-foreground: var(--brand-foreground);
+    --color-brand-muted: var(--brand-muted);
+    --color-brand-accent: var(--brand-accent);
+    --color-brand-accent-foreground: var(--brand-accent-foreground);
+}
+
+:root {
+    /* Hithaadhoo School brand — derived from the logo cyan (#00ccff).
+       A deeper cyan is used for buttons/links so white text stays legible,
+       with the bright logo cyan kept as the accent pop. */
+    --brand: hsl(198 100% 38%);
+    --brand-foreground: hsl(0 0% 100%);
+    --brand-muted: hsl(196 80% 94%);
+    --brand-accent: hsl(190 95% 50%);
+    --brand-accent-foreground: hsl(201 100% 14%);
+
+    /* Align shadcn primary + ring with the school brand */
+    --primary: hsl(198 100% 38%);
+    --primary-foreground: hsl(0 0% 100%);
+    --ring: hsl(198 100% 38%);
+}
+
+.dark {
+    --brand: hsl(192 90% 52%);
+    --brand-foreground: hsl(201 100% 9%);
+    --brand-muted: hsl(200 45% 15%);
+    --brand-accent: hsl(188 95% 55%);
+    --brand-accent-foreground: hsl(201 100% 10%);
+
+    --primary: hsl(192 90% 52%);
+    --primary-foreground: hsl(201 100% 9%);
+    --ring: hsl(192 90% 52%);
+}
+
+/* Use a proper Thaana font whenever Dhivehi is active. Thaana is a
+   low-height, right-to-left script that looks thin and cramped at Latin
+   defaults, so give it a touch more weight, size and line spacing. */
+[lang='dv'],
+[dir='rtl'],
+.font-thaana {
+    font-family: var(--font-thaana);
+    font-weight: 500;
+    line-height: 1.85;
+    letter-spacing: 0;
+    word-spacing: 0.05em;
+}
+
+/* The root Blade template puts `font-sans` on <body>, which sets font-family
+   directly on the body and would otherwise beat the [lang='dv'] rule on
+   <html> by inheritance. This higher-specificity rule ensures the Thaana
+   font actually applies to the body and everything inside it. */
+[lang='dv'] body,
+[dir='rtl'] body,
+body[dir='rtl'],
+body[lang='dv'] {
+    font-family: var(--font-thaana);
+}
+
+/* Slightly larger Thaana so it reads at a comparable visual weight to Latin.
+   Scoped to block/text and form elements so nested inline spans don't
+   compound their size. */
+[lang='dv'] :where(p, li, blockquote, dd, dt, label, input, textarea, select, button),
+[dir='rtl'] :where(p, li, blockquote, dd, dt, label, input, textarea, select, button) {
+    font-size: 1.06em;
+}
+
+/* Keep Thaana headings crisp and confident. */
+[lang='dv'] :where(h1, h2, h3, h4),
+[dir='rtl'] :where(h1, h2, h3, h4) {
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+/* Scroll-reveal animation (see <Reveal /> component) */
+@media (prefers-reduced-motion: no-preference) {
+    .reveal {
+        opacity: 0;
+        transform: translateY(26px) scale(0.99);
+        transition:
+            opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+    }
+
+    .reveal.is-visible {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Slow, subtle hero image zoom (Ken Burns) */
+@keyframes slow-zoom {
+    from {
+        transform: scale(1.02);
+    }
+    to {
+        transform: scale(1.12);
+    }
+}
+
+.animate-slow-zoom {
+    animation: slow-zoom 16s cubic-bezier(0.33, 0, 0.67, 1) infinite alternate;
+}
+
+/* Gentle levitation for decorative shapes */
+@keyframes float-soft {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-14px) scale(1.04);
+    }
+}
+
+.animate-float-soft {
+    animation: float-soft 9s ease-in-out infinite;
+}
+
+.animate-float-soft-delayed {
+    animation: float-soft 11s ease-in-out 2.5s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-slow-zoom,
+    .animate-float-soft,
+    .animate-float-soft-delayed {
+        animation: none;
+    }
+}
+
+/* Soft dotted texture for section backdrops */
+.bg-dots {
+    background-image: radial-gradient(
+        color-mix(in oklab, var(--brand) 18%, transparent) 1px,
+        transparent 1px
+    );
+    background-size: 22px 22px;
+}
+
+/* Animated hamburger */
+.hamburger-line {
+    transition:
+        transform 0.3s ease,
+        opacity 0.2s ease;
+}
