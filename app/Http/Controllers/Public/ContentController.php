@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Announcement;
 use App\Models\NewsArticle;
 use App\Models\SiteContent;
+use App\Support\PageMeta;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -45,13 +46,26 @@ class ContentController extends Controller
 
     public function newsShow(string $slug): Response
     {
+        $articles = NewsArticle::query()
+            ->where('is_published', true)
+            ->orderByDesc('published_at')
+            ->get();
+
+        $article = $articles->firstWhere('slug', $slug);
+
         return Inertia::render('public/NewsArticle', [
             'slug' => $slug,
-            'articles' => NewsArticle::query()
-                ->where('is_published', true)
-                ->orderByDesc('published_at')
-                ->get()
-                ->map->toPublicArray(),
+            'articles' => $articles->map->toPublicArray(),
+            // Shared links should preview the article itself, not the site.
+            'meta' => $article
+                ? PageMeta::make(
+                    title: PageMeta::fromBilingual($article->title),
+                    description: PageMeta::fromBilingual($article->excerpt)
+                        ?? PageMeta::fromBilingual($article->body),
+                    image: $article->image,
+                    type: 'article',
+                )
+                : PageMeta::make(title: 'News'),
         ]);
     }
 

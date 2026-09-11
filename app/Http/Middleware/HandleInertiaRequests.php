@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\SiteContent;
+use App\Support\PageMeta;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -45,6 +46,12 @@ class HandleInertiaRequests extends Middleware
                 'user' => $user,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            // Link-preview defaults. Pages with something better to show — a news
+            // article and its photo — override this from their controller.
+            'meta' => PageMeta::make(
+                description: PageMeta::fromBilingual(SiteContent::get('school')['welcome'] ?? null)
+                    ?? 'Building a generation for a successful life.',
+            ),
             'currentTeam' => fn () => $user?->currentTeam ? $user->toUserTeam($user->currentTeam) : null,
             'teams' => fn () => $user?->toUserTeams(includeCurrent: true) ?? [],
             'siteNavigation' => fn () => SiteContent::get('navigation'),

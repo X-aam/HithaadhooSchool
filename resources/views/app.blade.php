@@ -4,6 +4,33 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        {{-- Link previews. Inertia renders titles client-side, but crawlers
+             (Viber, WhatsApp, Facebook, Slack) never run JavaScript — they only
+             read this head, so these tags have to be rendered server-side. --}}
+        @php
+            $meta = $page['props']['meta'] ?? [];
+            $metaTitle = $meta['title'] ?? config('app.name', 'Hithaadhoo School');
+            $metaDescription = $meta['description'] ?? '';
+            $metaImage = $meta['image'] ?? url(\App\Support\PageMeta::DEFAULT_IMAGE);
+            $metaType = $meta['type'] ?? 'website';
+        @endphp
+
+        <meta name="description" content="{{ $metaDescription }}">
+        <link rel="canonical" href="{{ url()->current() }}">
+
+        <meta property="og:site_name" content="{{ config('app.name', 'Hithaadhoo School') }}">
+        <meta property="og:type" content="{{ $metaType }}">
+        <meta property="og:title" content="{{ $metaTitle }}">
+        <meta property="og:description" content="{{ $metaDescription }}">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:image" content="{{ $metaImage }}">
+        <meta property="og:locale" content="en_GB">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $metaTitle }}">
+        <meta name="twitter:description" content="{{ $metaDescription }}">
+        <meta name="twitter:image" content="{{ $metaImage }}">
+
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
         <script>
             (function() {
@@ -44,7 +71,7 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         <x-inertia::head>
-            <title>{{ config('app.name', 'Laravel') }}</title>
+            <title>{{ $metaTitle }}</title>
         </x-inertia::head>
     </head>
     <body class="font-sans antialiased">
