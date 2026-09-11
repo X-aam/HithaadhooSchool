@@ -59,9 +59,9 @@ class ContentController extends Controller
             // Shared links should preview the article itself, not the site.
             'meta' => $article
                 ? PageMeta::make(
-                    title: PageMeta::fromBilingual($article->title),
-                    description: PageMeta::fromBilingual($article->excerpt)
-                        ?? PageMeta::fromBilingual($article->body),
+                    title: $article->title,
+                    description: PageMeta::bilingual($article->excerpt)
+                        ?? PageMeta::bilingual($article->body),
                     image: $article->image,
                     type: 'article',
                 )

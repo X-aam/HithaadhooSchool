@@ -2,70 +2,112 @@
 
 use App\Models\NewsArticle;
 
+const TITLE_EN = 'Quran Recitation Competition';
+const TITLE_DV = 'ޤުރުއާން ކިޔެވުމުގެ މުބާރާތް';
+const EXCERPT_EN = 'Students showcased their talent in recitation and tajweed.';
+const EXCERPT_DV = 'ދަރިވަރުން ކިޔެވުމުގައި ހުނަރު ދައްކާލި.';
+
 function publishedArticle(array $overrides = []): NewsArticle
 {
     return NewsArticle::query()->create(array_merge([
-        'slug' => 'grade-10-farewell-assembly',
+        'slug' => 'quran-recitation-competition',
         'category' => 'events',
-        'image' => '/storage/uploads/farewell.jpg',
+        'image' => '/storage/uploads/recitation.jpg',
         'is_published' => true,
         'published_at' => now(),
         'author' => ['en' => 'Admin', 'dv' => 'އެޑްމިން'],
-        'title' => ['en' => 'Grade 10 Farewell Assembly', 'dv' => 'ގްރޭޑް 10 ވަދާޢީ ޖަލްސާ'],
-        'excerpt' => ['en' => 'A warm send-off for our graduating students.', 'dv' => 'ތަހުނިޔާ'],
-        'body' => ['en' => '<p>The assembly was held in the school hall.</p>'],
+        'title' => ['en' => TITLE_EN, 'dv' => TITLE_DV],
+        'excerpt' => ['en' => EXCERPT_EN, 'dv' => EXCERPT_DV],
+        'body' => ['en' => '<p>The competition was held in the school hall.</p>'],
     ], $overrides));
 }
 
-test('an article link preview carries its own title, excerpt and photo', function () {
-    config(['app.name' => 'Hithaadhoo School']);
+function previewHtml(string $slug = 'quran-recitation-competition'): string
+{
+    return test()->get("/news/{$slug}")->assertOk()->getContent();
+}
 
+test('a preview carries both languages, Dhivehi first', function () {
     publishedArticle();
 
-    $html = $this->get('/news/grade-10-farewell-assembly')->assertOk()->getContent();
-
-    expect($html)
-        ->toContain('<meta property="og:title" content="Grade 10 Farewell Assembly — Hithaadhoo School">')
-        ->toContain('<meta property="og:description" content="A warm send-off for our graduating students.">')
-        ->toContain('<meta property="og:type" content="article">')
-        // Crawlers require an absolute image URL, even though uploads are
-        // stored root-relative.
-        ->toContain('content="'.url('/storage/uploads/farewell.jpg').'"')
-        ->and($html)->not->toContain('<title>Laravel</title>');
+    expect(previewHtml())
+        ->toContain('<meta property="og:title" content="'.TITLE_DV.' · '.TITLE_EN.'">')
+        ->toContain('<meta property="og:description" content="'.EXCERPT_DV.' — '.EXCERPT_EN.'">');
 });
 
-test('the page title is the article, not the framework name', function () {
+test('og:title omits the site name so chat clients do not truncate it away', function () {
     config(['app.name' => 'Hithaadhoo School']);
 
     publishedArticle();
 
-    $this->get('/news/grade-10-farewell-assembly')
-        ->assertOk()
-        ->assertSee('<title>Grade 10 Farewell Assembly — Hithaadhoo School</title>', false);
+    $html = previewHtml();
+
+    // The site name belongs in og:site_name and the document title, not og:title.
+    expect($html)
+        ->toContain('<meta property="og:title" content="'.TITLE_DV.' · '.TITLE_EN.'">')
+        ->toContain('<meta property="og:site_name" content="Hithaadhoo School">')
+        ->toContain('<title>'.TITLE_DV.' · '.TITLE_EN.' — Hithaadhoo School</title>');
+});
+
+test('both locales are declared', function () {
+    publishedArticle();
+
+    expect(previewHtml())
+        ->toContain('<meta property="og:locale" content="dv_MV">')
+        ->toContain('<meta property="og:locale:alternate" content="en_GB">');
+});
+
+test('an article with only one language previews with just that one', function () {
+    publishedArticle([
+        'title' => ['en' => TITLE_EN, 'dv' => ''],
+        'excerpt' => ['en' => EXCERPT_EN, 'dv' => ''],
+    ]);
+
+    $html = previewHtml();
+
+    // No dangling separator when a side is empty.
+    expect($html)
+        ->toContain('<meta property="og:title" content="'.TITLE_EN.'">')
+        ->and($html)->not->toContain('content=" · '.TITLE_EN.'"');
+});
+
+test('the article photo is used, absolutised for crawlers', function () {
+    publishedArticle();
+
+    expect(previewHtml())->toContain('content="'.url('/storage/uploads/recitation.jpg').'"');
 });
 
 test('article html is stripped out of the preview description', function () {
-    publishedArticle(['excerpt' => ['en' => '<p>Tags <strong>removed</strong>.</p>']]);
+    publishedArticle([
+        'excerpt' => ['en' => '<p>Tags <strong>removed</strong>.</p>', 'dv' => ''],
+    ]);
 
-    $this->get('/news/grade-10-farewell-assembly')
-        ->assertOk()
-        ->assertSee('content="Tags removed."', false);
+    expect(previewHtml())->toContain('content="Tags removed."');
 });
 
 test('an article without an excerpt falls back to its body', function () {
-    publishedArticle(['excerpt' => ['en' => '']]);
+    publishedArticle(['excerpt' => ['en' => '', 'dv' => '']]);
 
-    $this->get('/news/grade-10-farewell-assembly')
-        ->assertOk()
-        ->assertSee('content="The assembly was held in the school hall."', false);
+    expect(previewHtml())->toContain('content="The competition was held in the school hall."');
 });
 
 test('an article without a photo falls back to the school logo', function () {
     publishedArticle(['image' => null]);
 
-    $this->get('/news/grade-10-farewell-assembly')
-        ->assertOk()
-        ->assertSee('content="'.url('/images/logo.png').'"', false);
+    expect(previewHtml())->toContain('content="'.url('/images/logo.png').'"');
+});
+
+test('each language is truncated on its own budget', function () {
+    publishedArticle([
+        'excerpt' => ['en' => str_repeat('a', 300), 'dv' => str_repeat('ހ', 300)],
+    ]);
+
+    $html = previewHtml();
+
+    // Both halves survive: a long Dhivehi excerpt must not crowd out the English.
+    expect($html)->toContain('aaa')
+        ->and($html)->toContain('ހހހ')
+        ->and($html)->toContain(' — ');
 });
 
 test('other public pages still get site-level preview tags', function () {
@@ -83,7 +125,6 @@ test('other public pages still get site-level preview tags', function () {
 test('the canonical url points at the page being viewed', function () {
     publishedArticle();
 
-    $this->get('/news/grade-10-farewell-assembly')
-        ->assertOk()
-        ->assertSee('<link rel="canonical" href="'.url('/news/grade-10-farewell-assembly').'">', false);
+    expect(previewHtml())
+        ->toContain('<link rel="canonical" href="'.url('/news/quran-recitation-competition').'">');
 });

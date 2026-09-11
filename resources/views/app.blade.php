@@ -9,7 +9,11 @@
              read this head, so these tags have to be rendered server-side. --}}
         @php
             $meta = $page['props']['meta'] ?? [];
-            $metaTitle = $meta['title'] ?? config('app.name', 'Hithaadhoo School');
+            $siteName = config('app.name', 'Hithaadhoo School');
+            // og:title drops the site name (og:site_name carries it, and chat
+            // clients truncate early); the document title keeps it.
+            $metaTitle = $meta['title'] ?? $siteName;
+            $documentTitle = $meta['documentTitle'] ?? $siteName;
             $metaDescription = $meta['description'] ?? '';
             $metaImage = $meta['image'] ?? url(\App\Support\PageMeta::DEFAULT_IMAGE);
             $metaType = $meta['type'] ?? 'website';
@@ -18,13 +22,15 @@
         <meta name="description" content="{{ $metaDescription }}">
         <link rel="canonical" href="{{ url()->current() }}">
 
-        <meta property="og:site_name" content="{{ config('app.name', 'Hithaadhoo School') }}">
+        <meta property="og:site_name" content="{{ $siteName }}">
         <meta property="og:type" content="{{ $metaType }}">
         <meta property="og:title" content="{{ $metaTitle }}">
         <meta property="og:description" content="{{ $metaDescription }}">
         <meta property="og:url" content="{{ url()->current() }}">
         <meta property="og:image" content="{{ $metaImage }}">
-        <meta property="og:locale" content="en_GB">
+        {{-- Previews carry both languages, Dhivehi first. --}}
+        <meta property="og:locale" content="dv_MV">
+        <meta property="og:locale:alternate" content="en_GB">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="{{ $metaTitle }}">
@@ -71,7 +77,7 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         <x-inertia::head>
-            <title>{{ $metaTitle }}</title>
+            <title>{{ $documentTitle }}</title>
         </x-inertia::head>
     </head>
     <body class="font-sans antialiased">

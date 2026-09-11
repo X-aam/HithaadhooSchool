@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
             // Link-preview defaults. Pages with something better to show — a news
             // article and its photo — override this from their controller.
             'meta' => PageMeta::make(
-                description: PageMeta::fromBilingual(SiteContent::get('school')['welcome'] ?? null)
+                description: SiteContent::get('school')['welcome']
                     ?? 'Building a generation for a successful life.',
             ),
             'currentTeam' => fn () => $user?->currentTeam ? $user->toUserTeam($user->currentTeam) : null,

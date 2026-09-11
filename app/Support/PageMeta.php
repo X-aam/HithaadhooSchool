@@ -11,54 +11,77 @@ use Illuminate\Support\Str;
  * WhatsApp, Facebook, Slack — do not run JavaScript. They only ever see the
  * server-rendered blade head, so anything that should appear in a shared link's
  * preview has to be put there by the controller.
+ *
+ * A shared URL carries no locale, so previews show both languages: Dhivehi
+ * first, then English.
  */
 class PageMeta
 {
     /** Fallback image when a page has nothing more specific to show. */
     public const DEFAULT_IMAGE = '/images/logo.png';
 
+    /** Separators between the two languages. */
+    private const TITLE_SEPARATOR = ' · ';
+
+    private const TEXT_SEPARATOR = ' — ';
+
     /**
-     * @param  string|null  $title  page title, without the site name
-     * @param  string|null  $description  plain text or HTML; tags are stripped
+     * Each language gets its own budget, so a long Dhivehi excerpt cannot crowd
+     * the English one out of the preview entirely.
+     */
+    private const PER_LANGUAGE_LIMIT = 140;
+
+    /**
+     * @param  mixed  $title  bilingual array or plain string, without site name
+     * @param  mixed  $description  bilingual array or string; HTML is stripped
      * @param  string|null  $image  absolute URL or root-relative path
      * @param  string  $type  Open Graph type: 'website' or 'article'
      * @return array<string, string>
      */
     public static function make(
-        ?string $title = null,
-        ?string $description = null,
+        mixed $title = null,
+        mixed $description = null,
         ?string $image = null,
         string $type = 'website',
     ): array {
         $siteName = (string) config('app.name');
+        $headline = self::bilingual($title, self::TITLE_SEPARATOR);
 
         return [
-            'title' => filled($title) ? $title.' — '.$siteName : $siteName,
-            'description' => self::text($description),
+            // og:title omits the site name — og:site_name already carries it,
+            // and chat clients truncate titles at around 35 characters.
+            'title' => $headline ?? $siteName,
+            'documentTitle' => filled($headline) ? $headline.' — '.$siteName : $siteName,
+            'description' => self::bilingual($description, self::TEXT_SEPARATOR) ?? '',
             'image' => self::absoluteUrl($image ?: self::DEFAULT_IMAGE),
             'type' => $type,
         ];
     }
 
     /**
-     * Pick the English side of a bilingual field. Previews have no locale to
-     * work from, and Thaana renders unreliably in chat clients.
-     *
-     * @param  mixed  $value  bilingual array or plain string
+     * Join the Dhivehi and English sides of a bilingual field, keeping whichever
+     * sides actually have content. Dhivehi leads: it is the school's primary
+     * language, and it is the half a chat client shows before truncating.
      */
-    public static function fromBilingual(mixed $value): ?string
+    public static function bilingual(mixed $value, string $separator = self::TEXT_SEPARATOR): ?string
     {
-        if (is_array($value)) {
-            foreach (['en', 'dv'] as $locale) {
-                if (is_string($value[$locale] ?? null) && trim($value[$locale]) !== '') {
-                    return $value[$locale];
-                }
-            }
+        if (! is_array($value)) {
+            $single = self::text(is_string($value) ? $value : null);
 
-            return null;
+            return $single !== '' ? $single : null;
         }
 
-        return is_string($value) && trim($value) !== '' ? $value : null;
+        $parts = [];
+
+        foreach (['dv', 'en'] as $locale) {
+            $text = self::text(is_string($value[$locale] ?? null) ? $value[$locale] : null);
+
+            if ($text !== '') {
+                $parts[] = $text;
+            }
+        }
+
+        return $parts === [] ? null : implode($separator, $parts);
     }
 
     /**
@@ -69,7 +92,7 @@ class PageMeta
         $plain = trim(html_entity_decode(strip_tags((string) $value), ENT_QUOTES | ENT_HTML5));
         $plain = (string) preg_replace('/\s+/u', ' ', $plain);
 
-        return Str::limit($plain, 200);
+        return Str::limit($plain, self::PER_LANGUAGE_LIMIT);
     }
 
     /**
