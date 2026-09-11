@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Settings\MailOAuthController;
 use App\Http\Controllers\Settings\MailSettingsController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SecurityController;
@@ -36,6 +37,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('settings/mail/test', [MailSettingsController::class, 'test'])
         ->middleware('throttle:6,1')
         ->name('mail.test');
+
+    /* OAuth 2 consent round trip for Microsoft 365 / Google mailboxes. */
+    Route::get('settings/mail/connect', [MailOAuthController::class, 'redirect'])->name('mail.oauth.redirect');
+    Route::get('settings/mail/callback', [MailOAuthController::class, 'callback'])->name('mail.oauth.callback');
+    Route::delete('settings/mail/connect', [MailOAuthController::class, 'disconnect'])->name('mail.oauth.disconnect');
 
     Route::get('settings/teams', [TeamController::class, 'index'])->name('teams.index');
     Route::post('settings/teams', [TeamController::class, 'store'])->name('teams.store');

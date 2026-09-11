@@ -52,9 +52,18 @@ against its host to decide whether a link can be made root-relative. A wrong
 value is what produces `http://localhost:8000/storage/...` paths saved into
 content.
 
-Mail can be left at its defaults — an administrator sets the real SMTP server in
-the admin panel under **Settings → Email**, which overrides the `MAIL_*`
-variables at runtime.
+Mail can be left at its defaults — an administrator sets the real server in the
+admin panel under **Settings → Email**, which overrides the `MAIL_*` variables
+at runtime.
+
+For Microsoft 365 or Google, choose modern authentication (OAuth 2) rather than
+a password. Register an application with the provider, add the redirect URI the
+settings page shows **exactly as given**, then paste the client ID and secret and
+press Connect. The consent screen returns a refresh token; access tokens are
+short lived and fetched from it automatically when mail is sent.
+
+`APP_URL` matters here too: the redirect URI is derived from it, and the
+provider rejects any mismatch.
 
 ## 3. Database
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\MailOAuthProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
@@ -21,6 +22,7 @@ class MailSetting extends Model
 
     protected $fillable = [
         'mailer',
+        'auth_type',
         'host',
         'port',
         'encryption',
@@ -30,6 +32,10 @@ class MailSetting extends Model
         'from_name',
         'verify_peer',
         'last_tested_at',
+        'oauth_client_id',
+        'oauth_client_secret',
+        'oauth_email',
+        'oauth_tenant',
     ];
 
     protected $casts = [
@@ -37,9 +43,18 @@ class MailSetting extends Model
         'verify_peer' => 'boolean',
         'password' => 'encrypted',
         'last_tested_at' => 'datetime',
+        'oauth_client_secret' => 'encrypted',
+        'oauth_refresh_token' => 'encrypted',
+        'oauth_access_token' => 'encrypted',
+        'oauth_expires_at' => 'datetime',
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = [
+        'password',
+        'oauth_client_secret',
+        'oauth_refresh_token',
+        'oauth_access_token',
+    ];
 
     /** Mailers an administrator can pick between in the admin panel. */
     public const MAILERS = ['smtp', 'log', 'sendmail', 'array'];
@@ -84,6 +99,31 @@ class MailSetting extends Model
         Cache::forget(self::LEGACY_CACHE_KEY);
     }
 
+    /** The OAuth provider in use, or null for classic SMTP authentication. */
+    public function oauthProvider(): ?MailOAuthProvider
+    {
+        return MailOAuthProvider::tryFrom((string) $this->auth_type);
+    }
+
+    public function usesOAuth(): bool
+    {
+        return $this->oauthProvider() !== null;
+    }
+
+    /** Has consent been granted and a refresh token stored? */
+    public function isConnected(): bool
+    {
+        return $this->usesOAuth() && filled($this->oauth_refresh_token);
+    }
+
+    /** Is the stored access token still good, with a margin to spare? */
+    public function hasFreshAccessToken(int $marginSeconds = 0): bool
+    {
+        return filled($this->oauth_access_token)
+            && $this->oauth_expires_at !== null
+            && $this->oauth_expires_at->isAfter(now()->addSeconds($marginSeconds));
+    }
+
     /**
      * Is there enough here to actually send mail? An SMTP mailer without a host
      * would fail at send time, so it is treated as unconfigured.
@@ -94,7 +134,12 @@ class MailSetting extends Model
             return in_array($this->mailer, self::MAILERS, true);
         }
 
-        return filled($this->host) && filled($this->port);
+        if (! filled($this->host) || ! filled($this->port)) {
+            return false;
+        }
+
+        // An OAuth mailbox cannot send until consent has actually been granted.
+        return ! $this->usesOAuth() || $this->isConnected();
     }
 
     /**
@@ -110,8 +155,15 @@ class MailSetting extends Model
             $overrides += [
                 'mail.mailers.smtp.host' => $this->host,
                 'mail.mailers.smtp.port' => $this->port,
-                'mail.mailers.smtp.username' => $this->username,
-                'mail.mailers.smtp.password' => $this->password,
+                /*
+                 * With OAuth the mailbox address is the SMTP username and the
+                 * access token stands in for the password (XOAUTH2). The token
+                 * itself is resolved lazily by the transport, not here, so a
+                 * stale one is never baked into the config.
+                 */
+                'mail.mailers.smtp.username' => $this->usesOAuth() ? $this->oauth_email : $this->username,
+                'mail.mailers.smtp.password' => $this->usesOAuth() ? null : $this->password,
+                'mail.mailers.smtp.oauth' => $this->usesOAuth() ? $this->auth_type : null,
                 'mail.mailers.smtp.verify_peer' => $this->verify_peer,
                 // Laravel reads an empty scheme as "decide from the port".
                 'mail.mailers.smtp.scheme' => match ($this->encryption) {
