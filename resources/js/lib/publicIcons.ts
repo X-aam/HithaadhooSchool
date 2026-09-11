@@ -20,6 +20,7 @@ export {
     Users,
     Megaphone,
     Newspaper,
+    LayoutDashboard,
     PenLine,
     Download,
     Phone,

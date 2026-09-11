@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CmsQuickLink from '@/components/public/CmsQuickLink.vue';
 import SiteFooter from '@/components/public/SiteFooter.vue';
 import SiteHeader from '@/components/public/SiteHeader.vue';
 </script>
@@ -10,5 +11,6 @@ import SiteHeader from '@/components/public/SiteHeader.vue';
             <slot />
         </main>
         <SiteFooter />
+        <CmsQuickLink />
     </div>
 </template>
