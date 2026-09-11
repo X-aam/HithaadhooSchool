@@ -67,10 +67,11 @@ test('users authenticate directly when email otp is disabled', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard'));
+    // Staff land in the CMS, not on a team dashboard.
+    $response->assertRedirect('/admin');
 });
 
-test('passkey login response redirects to the current team dashboard', function () {
+test('passkey login response redirects to the cms', function () {
     $user = User::factory()->create();
 
     $request = Request::create(route('login', absolute: false), 'GET', server: [
@@ -81,7 +82,7 @@ test('passkey login response redirects to the current team dashboard', function 
 
     $jsonResponse = app(PasskeyLoginResponse::class)->toResponse($request);
 
-    expect($jsonResponse->getData()->redirect)->toBe(route('dashboard', ['current_team' => $user->personalTeam()->slug]));
+    expect($jsonResponse->getData()->redirect)->toEndWith('/admin');
 });
 
 test('users with two factor enabled are redirected to two factor challenge', function () {

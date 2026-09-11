@@ -73,7 +73,8 @@ return [
     |
     */
 
-    'home' => '/dashboard',
+    // Staff sign in to run the website, so they land in the CMS.
+    'home' => '/admin',
 
     /*
     |--------------------------------------------------------------------------
