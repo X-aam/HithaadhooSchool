@@ -7,7 +7,10 @@ import PublicLayout from '@/layouts/PublicLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { initializeFlashToast } from '@/lib/flashToast';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+// VITE_APP_NAME is baked in when the assets are compiled, so a build machine
+// whose .env still carries the scaffolding name puts it in every browser tab.
+// The fallback names the site rather than the framework.
+const appName = import.meta.env.VITE_APP_NAME || 'Hithaadhoo School';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
