@@ -28,10 +28,17 @@ class CmsContentSeeder extends Seeder
         }
     }
 
+    /**
+     * Slugs are spelled out rather than left to the model. DatabaseSeeder uses
+     * WithoutModelEvents, so Announcement's saving hook never runs here and a
+     * strict database rejects the insert on the non-null slug column. The news
+     * rows below have always named theirs for the same reason.
+     */
     private function seedAnnouncements(): void
     {
         $rows = [
             [
+                'slug' => 'term-3-exam-timetable-released',
                 'category' => 'academic',
                 'pinned' => true,
                 'published_at' => '2026-06-28',
@@ -45,6 +52,7 @@ class CmsContentSeeder extends Seeder
                 ],
             ],
             [
+                'slug' => 'school-uniform-policy-update',
                 'category' => 'general',
                 'pinned' => false,
                 'published_at' => '2026-06-22',
@@ -58,6 +66,7 @@ class CmsContentSeeder extends Seeder
                 ],
             ],
             [
+                'slug' => 'annual-sports-day-save-the-date',
                 'category' => 'events',
                 'pinned' => false,
                 'published_at' => '2026-06-15',
@@ -71,6 +80,7 @@ class CmsContentSeeder extends Seeder
                 ],
             ],
             [
+                'slug' => 'school-reopening-date-confirmed',
                 'category' => 'academic',
                 'pinned' => false,
                 'published_at' => '2026-06-01',
@@ -84,6 +94,7 @@ class CmsContentSeeder extends Seeder
                 ],
             ],
             [
+                'slug' => 'early-closure-due-to-weather',
                 'category' => 'emergency',
                 'pinned' => false,
                 'published_at' => '2026-05-24',
