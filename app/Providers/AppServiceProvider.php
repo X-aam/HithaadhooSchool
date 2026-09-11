@@ -8,7 +8,6 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Throwable;
@@ -37,20 +36,16 @@ class AppServiceProvider extends ServiceProvider
      * Apply the mail server settings saved in the admin panel over the MAIL_*
      * environment defaults.
      *
-     * The active row is cached, so a normal request does not query for it. Any
-     * failure — the table missing before migrations run, an undecryptable
-     * password after an APP_KEY change — leaves the environment configuration
-     * in place rather than breaking every request in the app.
+     * Any failure — the table missing before migrations run, an undecryptable
+     * password after an APP_KEY change, the database being down — leaves the
+     * environment configuration in place rather than breaking every request.
      */
     protected function configureMailFromSettings(): void
     {
         try {
-            if (! Schema::hasTable('mail_settings')) {
-                return;
-            }
-
             $settings = MailSetting::active();
         } catch (Throwable) {
+            // No table yet (pre-migration), or the database is unreachable.
             return;
         }
 

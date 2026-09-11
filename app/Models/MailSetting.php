@@ -12,8 +12,12 @@ use Illuminate\Support\Facades\Cache;
  */
 class MailSetting extends Model
 {
-    /** Cache key for the active row; mail config is read on every send. */
-    public const CACHE_KEY = 'mail-settings';
+    /**
+     * Cache key used by an earlier version that cached the model itself. Still
+     * cleared on save so no stale payload can be left behind on a deployed
+     * site; nothing reads it any more.
+     */
+    private const LEGACY_CACHE_KEY = 'mail-settings';
 
     protected $fillable = [
         'mailer',
@@ -42,12 +46,21 @@ class MailSetting extends Model
 
     public const ENCRYPTIONS = ['tls', 'ssl', ''];
 
+    /**
+     * The active settings row, read fresh.
+     *
+     * This is deliberately not cached. Caching the model meant serialising an
+     * Eloquent object into the cache store, and a payload written by one deploy
+     * unserialises to __PHP_Incomplete_Class under the next — which then fails
+     * this method's return type and 500s the page. Caching the derived config
+     * instead would be worse still: it would put the decrypted SMTP password
+     * in the cache table in plain text.
+     *
+     * The cost is one indexed single-row query per request.
+     */
     public static function active(): ?self
     {
-        return Cache::rememberForever(
-            self::CACHE_KEY,
-            fn () => self::query()->orderBy('id')->first(),
-        );
+        return self::query()->orderBy('id')->first();
     }
 
     /** Store the single row, replacing whatever was there. */
@@ -68,7 +81,7 @@ class MailSetting extends Model
 
     public static function flush(): void
     {
-        Cache::forget(self::CACHE_KEY);
+        Cache::forget(self::LEGACY_CACHE_KEY);
     }
 
     /**

@@ -4,6 +4,7 @@ use App\Enums\UserRole;
 use App\Models\MailSetting;
 use App\Models\User;
 use App\Providers\AppServiceProvider;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 
 function admin(): User
@@ -169,4 +170,29 @@ test('the test address must be a valid email', function () {
     $this->actingAs(admin())
         ->post('/settings/mail/test', ['email' => 'not-an-email'])
         ->assertSessionHasErrors('email');
+});
+
+test('settings are read fresh, not from a cached model', function () {
+    MailSetting::store(validSettings());
+
+    // A cached Eloquent model unserialises to __PHP_Incomplete_Class after a
+    // deploy, which then fails active()'s return type and 500s the page.
+    Cache::put('mail-settings', 'a stale payload from an older deploy', 600);
+
+    expect(MailSetting::active())->toBeInstanceOf(MailSetting::class)
+        ->and(MailSetting::active()->host)->toBe('smtp.example.com');
+});
+
+test('the email settings page survives a poisoned legacy cache entry', function () {
+    MailSetting::store(validSettings());
+    Cache::put('mail-settings', 'a stale payload from an older deploy', 600);
+
+    $this->actingAs(admin())->get('/settings/mail')->assertOk();
+});
+
+test('a change is visible immediately, with no cache to clear', function () {
+    MailSetting::store(validSettings());
+    MailSetting::store(validSettings(['host' => 'smtp.changed.example.com']));
+
+    expect(MailSetting::active()->host)->toBe('smtp.changed.example.com');
 });
