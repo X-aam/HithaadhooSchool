@@ -17,7 +17,9 @@ const categories: {
     key: AnnouncementCategory | 'all';
     label: { en: string; dv: string };
 }[] = [
-    { key: 'all', label: messages.common.all },
+    // Reads as a dropdown default now, so it names what it clears — like
+    // the year and month filters beside it.
+    { key: 'all', label: { en: 'All categories', dv: 'ހުރިހާ ބައި' } },
     { key: 'academic', label: { en: 'Academic', dv: 'ކިޔެވުން' } },
     { key: 'events', label: { en: 'Events', dv: 'ހަރަކާތްތައް' } },
     { key: 'emergency', label: { en: 'Emergency', dv: 'ކުއްލި' } },
@@ -142,22 +144,20 @@ const filtered = computed(() =>
                 />
             </div>
 
-            <div class="flex flex-wrap items-center gap-1">
-                <button
-                    v-for="c in categories"
-                    :key="c.key"
-                    type="button"
-                    class="rounded-full border px-3 py-1.5 text-sm font-medium transition"
-                    :class="
-                        active === c.key
-                            ? 'border-brand bg-brand text-brand-foreground'
-                            : 'border-border bg-background text-foreground/70 hover:border-brand/40 hover:text-brand'
-                    "
-                    @click="active = c.key"
-                >
+            <select
+                v-model="active"
+                :aria-label="t({ en: 'Category', dv: 'ބައި' })"
+                class="rounded-full border bg-background px-3 py-1.5 text-sm font-medium transition focus:border-brand focus:outline-none"
+                :class="
+                    active === 'all'
+                        ? 'border-border text-foreground'
+                        : 'border-brand text-brand'
+                "
+            >
+                <option v-for="c in categories" :key="c.key" :value="c.key">
                     {{ t(c.label) }}
-                </button>
-            </div>
+                </option>
+            </select>
 
             <select
                 v-model="selectedYear"
