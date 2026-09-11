@@ -69,6 +69,23 @@ class ContentController extends Controller
         ]);
     }
 
+    public function announcementShow(string $slug): Response
+    {
+        $announcement = Announcement::query()
+            ->where('is_published', true)
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        return Inertia::render('public/Announcement', [
+            'announcement' => $announcement->toPublicArray(),
+            'meta' => PageMeta::make(
+                title: $announcement->title,
+                description: PageMeta::bilingual($announcement->body),
+                type: 'article',
+            ),
+        ]);
+    }
+
     public function announcements(): Response
     {
         return Inertia::render('public/Announcements', [

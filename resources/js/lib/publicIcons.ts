@@ -26,6 +26,7 @@ export {
     Mail,
     MapPin,
     Clock,
+    Paperclip,
     Pin,
     FileText,
     FileSpreadsheet,

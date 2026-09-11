@@ -155,18 +155,28 @@ export const heroSlides: {
 export type AnnouncementCategory =
     'academic' | 'events' | 'emergency' | 'general';
 
+export interface AnnouncementAttachment {
+    name: string;
+    url: string;
+    size: string;
+    extension: string;
+}
+
 export interface Announcement {
     id: number;
+    slug: string;
     category: AnnouncementCategory;
     pinned: boolean;
     date: string;
     title: Bilingual;
     body: Bilingual;
+    attachments?: AnnouncementAttachment[];
 }
 
 export const announcements: Announcement[] = [
     {
         id: 1,
+        slug: 'term-3-exam-timetable-released',
         category: 'academic',
         pinned: true,
         date: '2026-06-28',
@@ -181,6 +191,7 @@ export const announcements: Announcement[] = [
     },
     {
         id: 2,
+        slug: 'school-uniform-policy-update',
         category: 'general',
         pinned: false,
         date: '2026-06-22',
@@ -195,6 +206,7 @@ export const announcements: Announcement[] = [
     },
     {
         id: 3,
+        slug: 'annual-sports-day-save-the-date',
         category: 'events',
         pinned: false,
         date: '2026-06-15',
@@ -209,6 +221,7 @@ export const announcements: Announcement[] = [
     },
     {
         id: 4,
+        slug: 'school-reopening-date-confirmed',
         category: 'academic',
         pinned: false,
         date: '2026-06-01',
@@ -223,6 +236,7 @@ export const announcements: Announcement[] = [
     },
     {
         id: 5,
+        slug: 'early-closure-due-to-weather',
         category: 'emergency',
         pinned: false,
         date: '2026-05-24',

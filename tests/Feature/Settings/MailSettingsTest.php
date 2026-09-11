@@ -38,7 +38,8 @@ test('non-admins cannot change the email settings', function () {
 });
 
 test('guests cannot reach the email settings', function () {
-    $this->get('/settings/mail')->assertRedirect(route('login'));
+    // 404 rather than a redirect: the login path is deliberately obscure.
+    $this->get('/settings/mail')->assertNotFound();
 });
 
 test('admins can save the mail server settings', function () {

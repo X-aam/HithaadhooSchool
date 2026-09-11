@@ -56,6 +56,7 @@ class AnnouncementController extends Controller
                 'published_at' => $announcement->published_at?->format('Y-m-d'),
                 'title' => $announcement->title,
                 'body' => $announcement->body,
+                'attachments' => $announcement->attachmentList(),
             ],
         ]);
     }

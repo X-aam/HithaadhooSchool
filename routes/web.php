@@ -32,13 +32,18 @@ Route::get('/academic-calendar', [ContentController::class, 'academicCalendar'])
 Route::get('/activities', [ContentController::class, 'activities'])->name('activities');
 Route::get('/timetable', [ContentController::class, 'timetable'])->name('timetable');
 Route::get('/announcements', [ContentController::class, 'announcements'])->name('announcements');
+Route::get('/announcements/{slug}', [ContentController::class, 'announcementShow'])->name('announcements.show');
 Route::get('/news', [ContentController::class, 'newsIndex'])->name('news');
 Route::get('/news/{slug}', [ContentController::class, 'newsShow'])->name('news.show');
 Route::get('/downloads', [ContentController::class, 'downloads'])->name('downloads');
 Route::get('/team', [ContentController::class, 'team'])->name('team');
 Route::get('/contact', [ContentController::class, 'contact'])->name('contact');
 
-/* Content management (CMS) — behind auth */
+/*
+ * Content management (CMS) — behind auth. Signed-out visitors get a 404 from
+ * HideFromGuests (registered in the web group) rather than a redirect that
+ * would reveal the obscure login path.
+ */
 Route::prefix('admin')
     ->name('admin.')
     ->middleware(['auth'])

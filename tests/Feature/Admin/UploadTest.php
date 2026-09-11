@@ -35,8 +35,9 @@ test('uploads keep an absolute url when the disk points at another host', functi
 });
 
 test('guests cannot upload', function () {
+    // 404, not 401: /admin does not admit to existing for signed-out visitors.
     $this->postJson('/admin/uploads', ['image' => UploadedFile::fake()->image('slide.png')])
-        ->assertUnauthorized();
+        ->assertNotFound();
 });
 
 test('documents upload with a readable name and describe themselves back', function () {

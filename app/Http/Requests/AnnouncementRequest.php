@@ -23,6 +23,13 @@ class AnnouncementRequest extends FormRequest
             'title.dv' => ['nullable', 'string', 'max:255'],
             'body.en' => ['required', 'string'],
             'body.dv' => ['nullable', 'string'],
+            // Files already uploaded through the admin upload endpoint; only
+            // their descriptions are stored on the announcement.
+            'attachments' => ['array', 'max:20'],
+            'attachments.*.name' => ['required', 'string', 'max:255'],
+            'attachments.*.url' => ['required', 'string', 'max:2048'],
+            'attachments.*.size' => ['nullable', 'string', 'max:32'],
+            'attachments.*.extension' => ['nullable', 'string', 'max:16'],
         ];
     }
 
@@ -34,6 +41,7 @@ class AnnouncementRequest extends FormRequest
         $data['is_published'] = $this->boolean('is_published');
         $data['title'] = ['en' => $data['title']['en'], 'dv' => $data['title']['dv'] ?? ''];
         $data['body'] = ['en' => $data['body']['en'], 'dv' => $data['body']['dv'] ?? ''];
+        $data['attachments'] = array_values($data['attachments'] ?? []);
 
         return $data;
     }
