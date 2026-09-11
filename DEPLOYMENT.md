@@ -45,6 +45,23 @@ Copy `.env.example` to `.env` and set at minimum:
 | `APP_DEBUG` | `false` |
 | `APP_URL` | **Must be the real https URL.** |
 | `DB_*` | Database connection |
+| `FORTIFY_PREFIX` | Secret slug the login sits behind. Baked into the compiled assets, so changing it means rebuilding the front end, not just editing `.env`. |
+| `FORTIFY_EMAIL_OTP` | `true`. See below before turning it off. |
+
+`FORTIFY_EMAIL_OTP` is the second factor for anyone signing in with a password
+who has neither an authenticator app nor a passkey: they receive a one-time
+code by email. The code goes through whichever mailer is configured, so on a
+server where mail does not work yet — `MAIL_MAILER=log`, or SMTP credentials
+not filled in under **Settings → Email** — it is written to
+`storage/logs/laravel.log` and never delivered, and nobody can complete a
+sign-in.
+
+Setting it to `false` is the escape hatch for exactly that situation. It
+leaves the password as the only thing guarding the CMS, so set it back to
+`true` as soon as mail delivers. Sending is fail-open on error
+([RedirectIfEmailOtpRequired.php](app/Actions/Fortify/RedirectIfEmailOtpRequired.php))
+— a mailer that throws lets the sign-in through rather than locking the site —
+but the `log` mailer does not throw, so that safety net does not cover it.
 
 `APP_URL` matters more here than usual. The public disk builds file URLs from it
 ([config/filesystems.php](config/filesystems.php)), and the upload code compares

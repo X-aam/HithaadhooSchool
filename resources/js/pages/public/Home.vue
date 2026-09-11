@@ -632,41 +632,4 @@ const quickLinks = [
             </div>
         </div>
     </section>
-
-    <!-- CTA banner -->
-    <section class="relative overflow-hidden bg-brand">
-        <div
-            class="animate-float-soft pointer-events-none absolute end-10 -top-16 size-64 rounded-full bg-white/10 blur-3xl"
-        />
-        <div
-            class="animate-float-soft-delayed pointer-events-none absolute start-10 -bottom-20 size-72 rounded-full bg-brand-accent/20 blur-3xl"
-        />
-        <div
-            class="relative mx-auto flex max-w-7xl flex-col items-start gap-6 px-4 py-16 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8"
-        >
-            <Reveal class="max-w-2xl">
-                <h2
-                    class="text-2xl font-bold tracking-tight text-brand-foreground sm:text-3xl"
-                    dir="auto"
-                >
-                    {{ t(messages.home.ctaTitle) }}
-                </h2>
-                <p class="mt-3 text-brand-foreground/85" dir="auto">
-                    {{ t(messages.home.ctaText) }}
-                </p>
-            </Reveal>
-            <Reveal :delay="140">
-                <Link
-                    href="/contact"
-                    class="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-brand shadow-lg transition duration-300 hover:scale-[1.04] hover:shadow-xl"
-                >
-                    {{ t(messages.home.applyNow) }}
-                    <ArrowRight
-                        class="size-4"
-                        :class="isRtl ? 'rotate-180' : ''"
-                    />
-                </Link>
-            </Reveal>
-        </div>
-    </section>
 </template>

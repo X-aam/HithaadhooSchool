@@ -82,14 +82,6 @@ export const messages = {
             en: 'Latest announcements',
             dv: 'އެންމެ ފަހުގެ އިޢުލާން',
         },
-        ctaTitle: {
-            en: 'Admissions for 2026 are now open',
-            dv: '2026 ވަނަ އަހަރަށް އެޑްމިޝަން ހުޅުވާލެވިއްޖެ',
-        },
-        ctaText: {
-            en: 'Join a vibrant learning community. Applications close 30 November.',
-            dv: 'ދިރުންހުރި ތަޢުލީމީ މާޙައުލެއްގައި ބައިވެރިވެލައްވާ. ފޯމު ބަލައިގަތުން ނޮވެންބަރ 30 އަށް.',
-        },
         applyNow: { en: 'Apply now', dv: 'ފޯމު ހުށަހަޅުއްވާ' },
     },
     calendar: {
