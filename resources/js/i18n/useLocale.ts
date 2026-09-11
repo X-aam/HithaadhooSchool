@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
-import { messages   } from '@/i18n/messages';
-import type {Locale, LocalizedText} from '@/i18n/messages';
+import { messages } from '@/i18n/messages';
+import type { Locale, LocalizedText } from '@/i18n/messages';
 
 const STORAGE_KEY = 'gvs_locale';
 const COOKIE_KEY = 'gvs_locale';
@@ -32,10 +32,52 @@ const locale = ref<Locale>(readInitialLocale());
 
 // Explicit Dhivehi names — the `dv-MV` Intl locale is unavailable in most
 // browsers and silently falls back to English month/weekday labels.
-const DV_MONTHS_LONG = ['ޖެނުއަރީ', 'ފެބްރުއަރީ', 'މާރިޗު', 'އޭޕްރީލް', 'މޭ', 'ޖޫން', 'ޖުލައި', 'އޯގަސްޓު', 'ސެޕްޓެމްބަރު', 'އޮކްޓޫބަރު', 'ނޮވެމްބަރު', 'ޑިސެންބަރު'];
-const DV_MONTHS_SHORT = ['ޖެނު', 'ފެބް', 'މާރި', 'އޭޕް', 'މޭ', 'ޖޫން', 'ޖުލަ', 'އޯގަ', 'ސެޕް', 'އޮކް', 'ނޮވެ', 'ޑިސެ'];
-const DV_WEEKDAYS_LONG = ['އާދިއްތަ', 'ހޯމަ', 'އަންގާރަ', 'ބުދަ', 'ބުރާސްފަތި', 'ހުކުރު', 'ހޮނިހިރު'];
-const DV_WEEKDAYS_SHORT = ['އާދި', 'ހޯމަ', 'އަން', 'ބުދަ', 'ބުރާ', 'ހުކުރު', 'ހޮނި'];
+const DV_MONTHS_LONG = [
+    'ޖެނުއަރީ',
+    'ފެބްރުއަރީ',
+    'މާރިޗު',
+    'އޭޕްރީލް',
+    'މޭ',
+    'ޖޫން',
+    'ޖުލައި',
+    'އޯގަސްޓު',
+    'ސެޕްޓެމްބަރު',
+    'އޮކްޓޫބަރު',
+    'ނޮވެމްބަރު',
+    'ޑިސެންބަރު',
+];
+const DV_MONTHS_SHORT = [
+    'ޖެނު',
+    'ފެބް',
+    'މާރި',
+    'އޭޕް',
+    'މޭ',
+    'ޖޫން',
+    'ޖުލަ',
+    'އޯގަ',
+    'ސެޕް',
+    'އޮކް',
+    'ނޮވެ',
+    'ޑިސެ',
+];
+const DV_WEEKDAYS_LONG = [
+    'އާދިއްތަ',
+    'ހޯމަ',
+    'އަންގާރަ',
+    'ބުދަ',
+    'ބުރާސްފަތި',
+    'ހުކުރު',
+    'ހޮނިހިރު',
+];
+const DV_WEEKDAYS_SHORT = [
+    'އާދި',
+    'ހޯމަ',
+    'އަން',
+    'ބުދަ',
+    'ބުރާ',
+    'ހުކުރު',
+    'ހޮނި',
+];
 
 function applyDocumentLocale(value: Locale) {
     if (typeof document === 'undefined') {
@@ -112,7 +154,9 @@ export function useLocale() {
     }
 
     /** True when the requested language is missing for a content record. */
-    function isMissing(entry: Partial<Record<Locale, string>> | undefined): boolean {
+    function isMissing(
+        entry: Partial<Record<Locale, string>> | undefined,
+    ): boolean {
         if (!entry) {
             return true;
         }
@@ -129,21 +173,27 @@ export function useLocale() {
         ).format(value);
     }
 
-    /** Format an ISO date string for the active locale. */
+    /**
+     * Format an ISO date string for the active locale.
+     *
+     * `opts` replaces the default parts rather than merging with them, so
+     * asking for `{ month: 'long' }` gives "January" and not "1 January 2026".
+     * Both locales have to agree on this: merging is what made every month
+     * picker on the site read as the first day of the month.
+     */
     function date(iso: string, opts?: Intl.DateTimeFormatOptions): string {
         const d = new Date(iso);
+        const o: Intl.DateTimeFormatOptions = opts ?? {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        };
 
         if (locale.value !== 'dv') {
-            return new Intl.DateTimeFormat('en-GB', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                ...opts,
-            }).format(d);
+            return new Intl.DateTimeFormat('en-GB', o).format(d);
         }
 
         // Build the Dhivehi string from explicit names (day month year).
-        const o: Intl.DateTimeFormatOptions = opts ?? { year: 'numeric', month: 'long', day: 'numeric' };
         const dmy: string[] = [];
 
         if (o.day) {
@@ -151,7 +201,11 @@ export function useLocale() {
         }
 
         if (o.month) {
-            dmy.push((o.month === 'short' || o.month === 'narrow' ? DV_MONTHS_SHORT : DV_MONTHS_LONG)[d.getMonth()]);
+            dmy.push(
+                (o.month === 'short' || o.month === 'narrow'
+                    ? DV_MONTHS_SHORT
+                    : DV_MONTHS_LONG)[d.getMonth()],
+            );
         }
 
         if (o.year) {
@@ -161,7 +215,11 @@ export function useLocale() {
         const parts: string[] = [];
 
         if (o.weekday) {
-            parts.push((o.weekday === 'short' || o.weekday === 'narrow' ? DV_WEEKDAYS_SHORT : DV_WEEKDAYS_LONG)[d.getDay()]);
+            parts.push(
+                (o.weekday === 'short' || o.weekday === 'narrow'
+                    ? DV_WEEKDAYS_SHORT
+                    : DV_WEEKDAYS_LONG)[d.getDay()],
+            );
         }
 
         if (dmy.length) {
