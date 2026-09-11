@@ -7,7 +7,6 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -21,10 +20,18 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
+        /*
+         * AddLinkHeadersForPreloadedAssets is deliberately absent. It emits a
+         * Link: rel=preload header naming every Vite asset on the page, which
+         * runs to about 3 KB once the font faces are listed. Our host proxies
+         * PHP through nginx with the stock 4 KB proxy_buffer_size, and the
+         * login page cleared that on its own (4170 bytes of headers), so nginx
+         * answered 500 -- "upstream sent too big header" -- while lighter
+         * pages squeaked through. Preloading is not worth an unreachable CMS.
+         */
         $middleware->web(append: [
             HandleAppearance::class,
             HandleInertiaRequests::class,
-            AddLinkHeadersForPreloadedAssets::class,
             SetTeamUrlDefaults::class,
         ]);
     })
