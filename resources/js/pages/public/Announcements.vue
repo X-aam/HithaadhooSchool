@@ -125,49 +125,43 @@ const filtered = computed(() =>
     <Head :title="t(messages.nav.announcements)" />
 
     <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-        <!-- Search -->
-        <div class="relative mb-4 w-full sm:max-w-xs">
-            <Search
-                class="pointer-events-none absolute inset-y-0 start-3 my-auto size-4 text-muted-foreground"
-            />
-            <input
-                v-model="query"
-                type="search"
-                :placeholder="
-                    t({
-                        en: 'Search announcements…',
-                        dv: 'އިޢުލާންތައް ހޯއްދަވާ…',
-                    })
-                "
-                class="w-full rounded-full border border-border bg-background py-1.5 ps-9 pe-3 text-sm text-foreground transition placeholder:text-muted-foreground focus:border-brand focus:outline-none"
-            />
-        </div>
+        <!--
+            Search, categories and the date filter share one row. They wrap on
+            narrow screens rather than stacking into three fixed blocks.
+        -->
+        <div class="mb-8 flex flex-wrap items-center gap-x-2 gap-y-2">
+            <div class="relative w-44 shrink-0 sm:w-52">
+                <Search
+                    class="pointer-events-none absolute inset-y-0 start-3 my-auto size-4 text-muted-foreground"
+                />
+                <input
+                    v-model="query"
+                    type="search"
+                    :placeholder="t({ en: 'Search…', dv: 'ހޯއްދަވާ…' })"
+                    class="w-full rounded-full border border-border bg-background py-1.5 ps-9 pe-3 text-sm text-foreground transition placeholder:text-muted-foreground focus:border-brand focus:outline-none"
+                />
+            </div>
 
-        <!-- Filters -->
-        <div class="mb-8 flex flex-wrap gap-2">
-            <button
-                v-for="c in categories"
-                :key="c.key"
-                type="button"
-                class="rounded-full border px-4 py-1.5 text-sm font-medium transition"
-                :class="
-                    active === c.key
-                        ? 'border-brand bg-brand text-brand-foreground'
-                        : 'border-border bg-background text-foreground/70 hover:border-brand/40 hover:text-brand'
-                "
-                @click="active = c.key"
-            >
-                {{ t(c.label) }}
-            </button>
-        </div>
+            <div class="flex flex-wrap items-center gap-1">
+                <button
+                    v-for="c in categories"
+                    :key="c.key"
+                    type="button"
+                    class="rounded-full border px-3 py-1.5 text-sm font-medium transition"
+                    :class="
+                        active === c.key
+                            ? 'border-brand bg-brand text-brand-foreground'
+                            : 'border-border bg-background text-foreground/70 hover:border-brand/40 hover:text-brand'
+                    "
+                    @click="active = c.key"
+                >
+                    {{ t(c.label) }}
+                </button>
+            </div>
 
-        <!-- Date filter -->
-        <div class="mb-8 flex flex-wrap items-center gap-2 text-sm">
-            <span class="text-muted-foreground">{{
-                t({ en: 'Date', dv: 'ތާރީޚު' })
-            }}</span>
             <select
                 v-model="selectedYear"
+                :aria-label="t(messages.calendar.year)"
                 class="rounded-full border border-border bg-background px-3 py-1.5 text-sm transition focus:border-brand focus:outline-none"
             >
                 <option value="all">
@@ -177,8 +171,10 @@ const filtered = computed(() =>
                     {{ y }}
                 </option>
             </select>
+
             <select
                 v-model="selectedMonth"
+                :aria-label="t(messages.calendar.month)"
                 class="rounded-full border border-border bg-background px-3 py-1.5 text-sm transition focus:border-brand focus:outline-none"
             >
                 <option value="all">
@@ -192,15 +188,17 @@ const filtered = computed(() =>
                     {{ m.label }}
                 </option>
             </select>
+
             <button
                 v-if="dateFiltered"
                 type="button"
-                class="rounded-full px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:text-foreground"
+                class="rounded-full px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:text-foreground"
                 @click="clearDateFilter"
             >
                 {{ t({ en: 'Clear', dv: 'ސާފުކުރައްވާ' }) }}
             </button>
-            <span class="text-xs text-muted-foreground">
+
+            <span class="ms-auto shrink-0 text-xs text-muted-foreground">
                 {{ filtered.length }} {{ t({ en: 'shown', dv: 'ދައްކަނީ' }) }}
             </span>
         </div>
