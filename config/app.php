@@ -123,4 +123,20 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Seeded Administrator
+    |--------------------------------------------------------------------------
+    |
+    | The first CMS account created by `php artisan db:seed` (AdminUserSeeder).
+    | Leave the password empty to have a random one generated and printed.
+    |
+    */
+
+    'seed_admin' => [
+        'email' => env('SEED_ADMIN_EMAIL', 'admin@hithaadhooschool.edu.mv'),
+        'name' => env('SEED_ADMIN_NAME', 'Hithaadhoo School'),
+        'password' => env('SEED_ADMIN_PASSWORD'),
+    ],
+
 ];

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -11,17 +10,17 @@ class DatabaseSeeder extends Seeder
     use WithoutModelEvents;
 
     /**
-     * Seed the application's database.
+     * Seed the application's database with the site's real starting content.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            AdminUserSeeder::class,
+            SiteContentSeeder::class,
         ]);
 
-        $this->call(CmsContentSeeder::class);
+        // Demo news, announcements and calendar events are not part of the
+        // site's real content. Load them on purpose when wanted:
+        //   php artisan db:seed --class=CmsContentSeeder
     }
 }

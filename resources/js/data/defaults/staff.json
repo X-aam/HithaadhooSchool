@@ -1,0 +1,17 @@
+{
+    "id": 1,
+    "name": {
+        "en": "Ahmed Abdulla",
+        "dv": "އަހްމަދު ޢަބްދުﷲ"
+    },
+    "title": {
+        "en": "Principal",
+        "dv": "ޕްރިންސިޕަލް"
+    },
+    "photo": "/storage/uploads/FB5Zer1ZYzfh4mktJ8NlIp2lioKQRUHUE1rasUYG.png",
+    "bio": {
+        "en": "Leading Hithaadhoo School since 2018 with a focus on inclusive, student-centred learning.",
+        "dv": "2018 ން ފެށިގެން ބ. ހިތާދޫ ސްކޫލް ހިންގަވަނީ ދަރިވަރުންނަށް އަމާޒުކޮށްގެން."
+    },
+    "children": []
+}

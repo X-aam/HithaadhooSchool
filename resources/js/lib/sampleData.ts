@@ -1,3 +1,7 @@
+import downloadDefaults from '@/data/defaults/downloads.json';
+import heroDefaults from '@/data/defaults/hero.json';
+import schoolDefaults from '@/data/defaults/school.json';
+import staffDefaults from '@/data/defaults/staff.json';
 import type { Locale } from '@/i18n/messages';
 
 /** A piece of text available in one or both languages. */
@@ -41,109 +45,12 @@ export const avatar = (n: number) => `https://i.pravatar.cc/240?img=${n}`;
 
 /* ---------------------------------------------------------------- School */
 
-export const school = {
-    established: 1951,
-    students: 240,
-    teachers: 48,
-    motto: {
-        en: 'Heuristic Swot',
-        dv: 'ހިއުރިސްޓިކް ސްވޮޓް',
-    } satisfies Bilingual,
-    welcome: {
-        en: 'On behalf of our whole community, welcome to Hithaadhoo School. On 17 April 1951 the people of Hithaadhoo worked and sacrificed to establish this school, and ever since we have grown generations of confident, competent and responsible islanders who uphold Islamic principles and values — many of whom serve the nation today in its highest posts. We warmly invite you to explore our school and become part of our family.',
-        dv: 'އަޅުގަނޑުމެންގެ މުޅި މުޖުތަމަޢުގެ ފަރާތުން، ބ. ހިތާދޫ ސްކޫލަށް މަރުޙަބާ. 1951 ވަނަ އަހަރު ހިތާދޫގެ ރައްޔިތުންގެ ބުރަ މަސައްކަތުން މި ސްކޫލް ޤާއިމުކުރެވުނު ފަހުން، އިސްލާމީ ރިވެތި އުސޫލުތަކުގައި ހިފަހައްޓާ، ޤާބިލު، ޒިންމާދާރު ދަރިންތަކެއް މި ސްކޫލުން ދަނީ އުފެދެމުން. އޭގެ ތެރެއިން ގިނަ ދަރިވަރުން މިއަދު ޤައުމުގެ މަތީ މަޤާމުތަކުގައި ޚިދުމަތްކުރައްވާކަމީ އަޅުގަނޑުމެންގެ ފަޚުރެއް. އަޅުގަނޑުމެންގެ ސްކޫލު ބައްލަވާލައި، މި އާއިލާގެ ބައެއްގެ ގޮތުގައި ވެލެއްވުމަށް ދަޢުވަތު އަރުވަން.',
-    } satisfies Bilingual,
-    mission: {
-        en: 'Produce self-confident, competent, productive and responsible citizens who uphold Islamic principles and values in life.',
-        dv: 'އިސްލާމީ ރިވެތި އުޞޫލުތަކާއި އަގުތަކުގައި ހިފަހައްޓާ، އަމިއްލަ ނަފްސަށް އިތުބާރުކުރާ، ޤާބިލު، އުފެއްދުންތެރި އަދި ޒިންމާދާރު ރައްޔިތުންތަކެއް ބިނާކުރުން.',
-    } satisfies Bilingual,
-    vision: {
-        en: 'Building a generation for a successful life.',
-        dv: 'ކާމިޔާބު ދިރިއުޅުމަކަށް ޖީލެއް ބިނާކުރުން.',
-    } satisfies Bilingual,
-    coreValues: [
-        {
-            title: {
-                en: 'Faith',
-                dv: 'އީމާންތެރިކަން',
-            },
-            description: {
-                en: 'We uphold Islamic principles and values in everything we do, at school and beyond.',
-                dv: 'ސްކޫލުގައާއި ބޭރުގައި، ހުރިހާ ކަމެއްގައި އިސްލާމީ އުޞޫލުތަކާއި ރިވެތި އަގުތައް ހިފަހައްޓަމެވެ.',
-            },
-        },
-        {
-            title: {
-                en: 'Respect',
-                dv: 'އިޙްތިރާމް',
-            },
-            description: {
-                en: 'We treat every student, teacher, parent and visitor with kindness and dignity.',
-                dv: 'ކޮންމެ ދަރިވަރަކަށާއި، މުދައްރިސަކަށާއި، ބެލެނިވެރިއަކަށާއި، ޒިޔާރަތްކުރާ ކޮންމެ މީހަކަށް އޯގާތެރިކަމާއި ޝަރަފުވެރިކަމާއެކު މުޢާމަލާތްކުރަމެވެ.',
-            },
-        },
-        {
-            title: {
-                en: 'Responsibility',
-                dv: 'ޒިންމާދާރުކަން',
-            },
-            description: {
-                en: 'We own our actions and our learning, and we care for our school, our island and our nation.',
-                dv: 'އަމިއްލަ ޢަމަލުތަކާއި ދަސްކުރުމުގެ ޒިންމާ ނަގައި، ސްކޫލާއި، ރަށާއި، ޤައުމަށް ފަރުވާތެރިވަމެވެ.',
-            },
-        },
-        {
-            title: {
-                en: 'Excellence',
-                dv: 'މޮޅުކަން',
-            },
-            description: {
-                en: 'We aim high, work hard and keep improving in our studies, sports and the arts.',
-                dv: 'ކިޔެވުމާއި، ކުޅިވަރާއި، ފަންނުގައި މަތީ އަމާޒުތައް ކަނޑައަޅައި، ބުރަ މަސައްކަތުން ކުރިއަރަމުން ދަމެވެ.',
-            },
-        },
-        {
-            title: {
-                en: 'Integrity',
-                dv: 'ތެދުވެރިކަން',
-            },
-            description: {
-                en: 'We are honest and fair, and we do the right thing even when no one is watching.',
-                dv: 'ތެދުވެރިކަމާއި ޢަދުލުވެރިކަމާއެކު، އެއްވެސް މީހަކު ނުދެކުނު ނަމަވެސް ރަނގަޅު ކަން ކުރަމެވެ.',
-            },
-        },
-    ] as { title: Bilingual; description: Bilingual }[],
-    principal: {
-        name: {
-            en: 'Aishath Rifga',
-            dv: 'ޢާއިޝަތު ރިފްޤާ',
-        } satisfies Bilingual,
-        title: { en: 'Principal', dv: 'ޕްރިންސިޕަލް' } satisfies Bilingual,
-        photo: avatar(5),
-    },
-    contact: {
-        address: {
-            en: 'Hithaadhoo School, B. Hithaadhoo 06100, Maldives',
-            dv: 'ބ. ހިތާދޫ ސްކޫލް، ބ. ހިތާދޫ 06100، ދިވެހިރާއްޖެ',
-        } satisfies Bilingual,
-        phone: '+960 6600314',
-        email: 'admin@hithaadhooschool.edu.mv',
-        officeHours: {
-            en: 'Sunday – Thursday, 7:30 AM – 3:00 PM',
-            dv: 'އާދިއްތަ – ބުރާސްފަތި، ހެނދުނު 7:30 – މެންދުރު 3:00',
-        } satisfies Bilingual,
-        // B. Hithaadhoo, Baa Atoll
-        mapLat: 5.1214,
-        mapLng: 73.0736,
-        social: {
-            facebook:
-                'https://www.facebook.com/p/B-Hithaadhoo-School-100035972058029/',
-            instagram: 'https://instagram.com',
-            youtube: 'https://youtube.com',
-            x: 'https://x.com/B_hithaadhoo',
-        },
-    },
-};
+/*
+ * The site's content defaults live as JSON in resources/js/data/defaults. The
+ * database seeder (SiteContentSeeder) reads the same files, so the fallback a
+ * page shows and the content a fresh install starts with are always the same.
+ */
+export const school = schoolDefaults;
 
 /**
  * Resolve a school photo. Drop real photos into `public/images/` using the
@@ -166,41 +73,7 @@ export const heroSlides: {
     fallback: string;
     title: Bilingual;
     subtitle: Bilingual;
-}[] = [
-    {
-        ...photo('hero-1.jpg', 'islandAerial', 1600, 900),
-        title: {
-            en: 'Welcome to Hithaadhoo School',
-            dv: 'ބ. ހިތާދޫ ސްކޫލަށް މަރުޙަބާ',
-        },
-        subtitle: {
-            en: 'Building a generation for a successful life since 1951',
-            dv: '1951 ން ފެށިގެން ކާމިޔާބު ދިރިއުޅުމަކަށް ޖީލެއް ބިނާކުރަނީ',
-        },
-    },
-    {
-        ...photo('hero-2.jpg', 'classroomKids', 1600, 900),
-        title: {
-            en: 'Learning that inspires',
-            dv: 'ހިތްވަރުދޭ ތަޢުލީމު',
-        },
-        subtitle: {
-            en: 'Dedicated teachers, curious young minds',
-            dv: 'ފަންވަރު ހުރި މުދައްރިސުން، އުނގެނުމަށް ފޯރި ހުރި ދަރިވަރުން',
-        },
-    },
-    {
-        ...photo('hero-3.jpg', 'beachPalm', 1600, 900),
-        title: {
-            en: 'More than a classroom',
-            dv: 'ކްލާސްރޫމަށްވުރެ ފުޅާ',
-        },
-        subtitle: {
-            en: 'Sports, arts, clubs and lifelong friendships',
-            dv: 'ކުޅިވަރު، ފަންނު، ކްލަބުތައް އަދި ދާއިމީ އެކުވެރިކަން',
-        },
-    },
-];
+}[] = heroDefaults;
 
 /* ---------------------------------------------------------- Announcements */
 
@@ -1059,110 +932,7 @@ export interface StaffNode {
     children?: StaffNode[];
 }
 
-export const orgChart: StaffNode = {
-    id: 1,
-    name: school.principal.name,
-    title: school.principal.title,
-    photo: avatar(5),
-    bio: {
-        en: 'Leading Hithaadhoo School since 2018 with a focus on inclusive, student-centred learning.',
-        dv: '2018 ން ފެށިގެން ބ. ހިތާދޫ ސްކޫލް ހިންގަވަނީ ދަރިވަރުންނަށް އަމާޒުކޮށްގެން.',
-    },
-    children: [
-        {
-            id: 2,
-            name: { en: 'Ibrahim Waheed', dv: 'އިބްރާހީމް ވަޙީދު' },
-            title: {
-                en: 'Vice Principal (Academics)',
-                dv: 'ވައިސް ޕްރިންސިޕަލް (ކިޔެވުން)',
-            },
-            photo: avatar(12),
-            bio: {
-                en: 'Oversees curriculum, assessment and teacher development across all grades.',
-                dv: 'ހުރިހާ ގްރޭޑްތަކުގެ މަންހަޖާއި، އިމްތިޙާނާއި، މުދައްރިސުން ތަރައްޤީކުރުން ބަލަހައްޓަވަނީ.',
-            },
-            children: [
-                {
-                    id: 5,
-                    name: { en: 'Mariyam Zoona', dv: 'މަރިޔަމް ޒޫނާ' },
-                    title: {
-                        en: 'Head of Sciences',
-                        dv: 'ސައިންސް ދާއިރާގެ ވެރިޔާ',
-                    },
-                    photo: avatar(9),
-                    bio: {
-                        en: 'Physics teacher and coordinator of the STEM programme.',
-                        dv: 'ފިޒިކްސް މުދައްރިސެއް އަދި ސްޓެމް ޕްރޮގްރާމްގެ ކޯޑިނޭޓަރ.',
-                    },
-                },
-                {
-                    id: 6,
-                    name: { en: 'Ali Shameem', dv: 'ޢަލީ ޝަމީމް' },
-                    title: {
-                        en: 'Head of Languages',
-                        dv: 'ބަހުގެ ދާއިރާގެ ވެރިޔާ',
-                    },
-                    photo: avatar(15),
-                    bio: {
-                        en: 'Leads the Dhivehi and English departments.',
-                        dv: 'ދިވެހި އަދި އިނގިރޭސި ދާއިރާ ލީޑްކުރައްވަނީ.',
-                    },
-                },
-            ],
-        },
-        {
-            id: 3,
-            name: { en: 'Aminath Nasra', dv: 'އާމިނަތު ނަޞްރާ' },
-            title: {
-                en: 'Vice Principal (Student Affairs)',
-                dv: 'ވައިސް ޕްރިންސިޕަލް (ދަރިވަރުންގެ ކަންކަން)',
-            },
-            photo: avatar(20),
-            bio: {
-                en: 'Responsible for wellbeing, discipline and extracurricular activities.',
-                dv: 'ދަރިވަރުންގެ ދުޅަހެޔޮކަމާއި، އަޚްލާޤާއި، ހަރަކާތްތައް ބަލަހައްޓަވަނީ.',
-            },
-            children: [
-                {
-                    id: 7,
-                    name: { en: 'Hawwa Leena', dv: 'ޙައްވާ ލީނާ' },
-                    title: {
-                        en: 'Head of Arts',
-                        dv: 'ފަންނުވެރިކަމުގެ ވެރިޔާ',
-                    },
-                    photo: avatar(24),
-                    bio: {
-                        en: 'Art and music teacher, coordinator of school events.',
-                        dv: 'ކުރެހުމާއި މިއުޒިކް މުދައްރިސެއް، ސްކޫލް ހަރަކާތްތަކުގެ ކޯޑިނޭޓަރ.',
-                    },
-                },
-                {
-                    id: 8,
-                    name: { en: 'Zaid Mohamed', dv: 'ޒައިދު މުޙައްމަދު' },
-                    title: {
-                        en: 'Head of Sports',
-                        dv: 'ކުޅިވަރު ދާއިރާގެ ވެރިޔާ',
-                    },
-                    photo: avatar(33),
-                    bio: {
-                        en: 'PE teacher and coach of the school football team.',
-                        dv: 'ކުޅިވަރު މުދައްރިސެއް އަދި ސްކޫލް ފުޓްބޯޅަ ޓީމުގެ ކޯޗު.',
-                    },
-                },
-            ],
-        },
-        {
-            id: 4,
-            name: { en: 'Fathimath Rasheedha', dv: 'ފާތިމަތު ރަޝީދާ' },
-            title: { en: 'Administration Manager', dv: 'އިދާރީ މެނޭޖަރ' },
-            photo: avatar(41),
-            bio: {
-                en: 'Manages admissions, finance and school operations.',
-                dv: 'އެޑްމިޝަން، މާލީ ކަންކަން އަދި ސްކޫލް ހިންގުން ބަލަހައްޓަވަނީ.',
-            },
-        },
-    ],
-};
+export const orgChart: StaffNode = staffDefaults;
 
 /* ------------------------------------------------------------ Downloads */
 
@@ -1172,93 +942,13 @@ export interface DownloadItem {
     id: number;
     category: DownloadCategory;
     fileType: 'pdf' | 'docx' | 'xlsx';
-    size: string;
+    size?: string;
     date: string;
     title: Bilingual;
     url?: string;
 }
 
-export const downloads: DownloadItem[] = [
-    {
-        id: 1,
-        category: 'forms',
-        fileType: 'pdf',
-        size: '240 KB',
-        date: '2026-06-10',
-        title: {
-            en: 'Admission Application Form 2026',
-            dv: 'އެޑްމިޝަން ފޯމު 2026',
-        },
-    },
-    {
-        id: 2,
-        category: 'forms',
-        fileType: 'docx',
-        size: '88 KB',
-        date: '2026-05-02',
-        title: { en: 'Leave Request Form', dv: 'ޗުއްޓީ އެދޭ ފޯމު' },
-    },
-    {
-        id: 3,
-        category: 'policies',
-        fileType: 'pdf',
-        size: '1.2 MB',
-        date: '2026-04-18',
-        title: {
-            en: 'Child Protection Policy',
-            dv: 'ކުޑަކުދިން ރައްކާތެރިކުރުމުގެ ސިޔާސަތު',
-        },
-    },
-    {
-        id: 4,
-        category: 'policies',
-        fileType: 'pdf',
-        size: '640 KB',
-        date: '2026-04-01',
-        title: { en: 'School Uniform Policy', dv: 'ޔުނިފޯމް ސިޔާސަތު' },
-    },
-    {
-        id: 5,
-        category: 'syllabi',
-        fileType: 'pdf',
-        size: '820 KB',
-        date: '2026-01-08',
-        title: {
-            en: 'Grade 10 Syllabus Overview',
-            dv: 'ގްރޭޑް 10 މަންހަޖުގެ ޚުލާޞާ',
-        },
-    },
-    {
-        id: 6,
-        category: 'syllabi',
-        fileType: 'xlsx',
-        size: '54 KB',
-        date: '2026-01-08',
-        title: {
-            en: 'Term 3 Assessment Weightings',
-            dv: 'ތިންވަނަ ޓާމް އިމްތިޙާން ބަރުދަން',
-        },
-    },
-    {
-        id: 7,
-        category: 'newsletters',
-        fileType: 'pdf',
-        size: '3.1 MB',
-        date: '2026-06-27',
-        title: {
-            en: 'Hithaadhoo School Newsletter — Term 2',
-            dv: 'ހިތާދޫ ސްކޫލް ނިއުސްލެޓަރ — ދެވަނަ ޓާމް',
-        },
-    },
-    {
-        id: 8,
-        category: 'forms',
-        fileType: 'pdf',
-        size: '180 KB',
-        date: '2026-03-15',
-        title: { en: 'Fee Structure 2026', dv: 'ފީ ސްޓްރަކްޗަރ 2026' },
-    },
-];
+export const downloads = downloadDefaults as DownloadItem[];
 
 /* ------------------------------------------------------------- News/Blog */
 

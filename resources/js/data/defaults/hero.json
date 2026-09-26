@@ -1,0 +1,38 @@
+[
+    {
+        "image": "/storage/uploads/iiPWfjaSkJedDXqQxV3VXL4XZZn8vL2TrtpwMwYt.jpg",
+        "fallback": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1600&h=900&q=80",
+        "title": {
+            "en": "Welcome to Hithaadhoo School",
+            "dv": "ބ. ހިތާދޫ ސްކޫލަށް މަރުޙަބާ"
+        },
+        "subtitle": {
+            "en": "Building a generation for a successful life since 1951",
+            "dv": "1951 ން ފެށިގެން ކާމިޔާބު ދިރިއުޅުމަކަށް ޖީލެއް ބިނާކުރަނީ"
+        }
+    },
+    {
+        "image": "/storage/uploads/GfiEZiTIoK8Qbc3BOgGRuu1EzahId7DgHFBnMtKO.png",
+        "fallback": "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1600&h=900&q=80",
+        "title": {
+            "en": "Learning that inspires",
+            "dv": "ހިތްވަރުދޭ ތަޢުލީމު"
+        },
+        "subtitle": {
+            "en": "Dedicated teachers, curious young minds",
+            "dv": "ފަންވަރު ހުރި މުދައްރިސުން، އުނގެނުމަށް ފޯރި ހުރި ދަރިވަރުން"
+        }
+    },
+    {
+        "image": "/storage/uploads/EBi1KDIaww0s2Zo0WGkqijkOcgvV3W6613JzFjOv.jpg",
+        "fallback": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&h=900&q=80",
+        "title": {
+            "en": "More than a classroom",
+            "dv": "ކްލާސްރޫމަށްވުރެ ފުޅާ"
+        },
+        "subtitle": {
+            "en": "Sports, arts, clubs and lifelong friendships",
+            "dv": "ކުޅިވަރު، ފަންނު، ކްލަބުތައް އަދި ދާއިމީ އެކުވެރިކަން"
+        }
+    }
+]

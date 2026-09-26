@@ -1,0 +1,104 @@
+{
+    "established": 1951,
+    "students": 240,
+    "teachers": 48,
+    "motto": {
+        "en": "Heuristic Swot",
+        "dv": "ހިއުރިސްޓިކް ސްވޮޓް"
+    },
+    "welcome": {
+        "en": "On behalf of our whole community, welcome to Hithaadhoo School. On 17 April 1951 the people of Hithaadhoo worked and sacrificed to establish this school, and ever since we have grown generations of confident, competent and responsible islanders who uphold Islamic principles and values — many of whom serve the nation today in its highest posts. We warmly invite you to explore our school and become part of our family.",
+        "dv": "އަޅުގަނޑުމެންގެ މުޅި މުޖުތަމަޢުގެ ފަރާތުން، ބ. ހިތާދޫ ސްކޫލަށް މަރުޙަބާ. 1951 ވަނަ އަހަރު ހިތާދޫގެ ރައްޔިތުންގެ ބުރަ މަސައްކަތުން މި ސްކޫލް ޤާއިމުކުރެވުނު ފަހުން، އިސްލާމީ ރިވެތި އުސޫލުތަކުގައި ހިފަހައްޓާ، ޤާބިލު، ޒިންމާދާރު ދަރިންތަކެއް މި ސްކޫލުން ދަނީ އުފެދެމުން. އޭގެ ތެރެއިން ގިނަ ދަރިވަރުން މިއަދު ޤައުމުގެ މަތީ މަޤާމުތަކުގައި ޚިދުމަތްކުރައްވާކަމީ އަޅުގަނޑުމެންގެ ފަޚުރެއް. އަޅުގަނޑުމެންގެ ސްކޫލު ބައްލަވާލައި، މި އާއިލާގެ ބައެއްގެ ގޮތުގައި ވެލެއްވުމަށް ދަޢުވަތު އަރުވަން."
+    },
+    "mission": {
+        "en": "Produce self-confident, competent, productive and responsible citizens who uphold Islamic principles and values in their life.",
+        "dv": "ކޮންމެ ކުއްޖަކީވެސް އަމިއްލަ ނަފްސަށް އިތުބާރުކުރާ، އިސްލާމީ ތަރުބިއްޔަތުން ޖަރީވެފައިވާ، ޤާބިލް، އުފެއްދުންތެރި އަދި ޒިންމާދާރު ކުއްޖަކަށް ހެދުން."
+    },
+    "vision": {
+        "en": "Building a generation for a successful life.",
+        "dv": "ކާމިޔާބު ދިރިއުޅުމަކަށް ތައްޔާރުވެފައިވާ ޖީލެއް ބިނާކުރުން."
+    },
+    "principal": {
+        "name": {
+            "en": "Ahmed Abdulla",
+            "dv": "އަހްމަދު ޢަބްދުﷲ"
+        },
+        "title": {
+            "en": "Principal",
+            "dv": "ޕްރިންސިޕަލް"
+        },
+        "photo": "/storage/uploads/8oiFUOhhRakpTBOOTG1pvtYVKqDLxXRoQT67hI1P.png"
+    },
+    "contact": {
+        "address": {
+            "en": "Hithaadhoo School, B. Hithaadhoo 06100, Maldives",
+            "dv": "ބ. ހިތާދޫ ސްކޫލް، ބ. ހިތާދޫ 06100، ދިވެހިރާއްޖެ"
+        },
+        "phone": "+960 6600314",
+        "email": "admin@hithaadhooschool.edu.mv",
+        "officeHours": {
+            "en": "Sunday – Thursday, 8:00 AM – 2:00 PM",
+            "dv": "އާދިއްތަ – ބުރާސްފަތި، ހެނދުނު 8:00 – މެންދުރު 2:00"
+        },
+        "mapLat": 5.006079,
+        "mapLng": 72.922531,
+        "social": {
+            "facebook": "https://www.facebook.com/p/B-Hithaadhoo-School-100035972058029/",
+            "instagram": "https://instagram.com",
+            "youtube": "https://youtube.com",
+            "x": "https://x.com/B_hithaadhoo"
+        }
+    },
+    "coreValues": [
+        {
+            "title": {
+                "en": "Faith",
+                "dv": "އީމާންތެރިކަން"
+            },
+            "description": {
+                "en": "We uphold Islamic principles and values in everything we do, at school and beyond.",
+                "dv": "ސްކޫލުގައާއި ބޭރުގައި، ހުރިހާ ކަމެއްގައި އިސްލާމީ އުޞޫލުތަކާއި ރިވެތި އަގުތައް ހިފަހައްޓަމެވެ."
+            }
+        },
+        {
+            "title": {
+                "en": "Respect",
+                "dv": "އިޙްތިރާމް"
+            },
+            "description": {
+                "en": "We treat every student, teacher, parent and visitor with kindness and dignity.",
+                "dv": "ކޮންމެ ދަރިވަރަކަށާއި، މުދައްރިސަކަށާއި، ބެލެނިވެރިއަކަށާއި، ޒިޔާރަތްކުރާ ކޮންމެ މީހަކަށް އޯގާތެރިކަމާއި ޝަރަފުވެރިކަމާއެކު މުޢާމަލާތްކުރަމެވެ."
+            }
+        },
+        {
+            "title": {
+                "en": "Responsibility",
+                "dv": "ޒިންމާދާރުކަން"
+            },
+            "description": {
+                "en": "We own our actions and our learning, and we care for our school, our island and our nation.",
+                "dv": "އަމިއްލަ ޢަމަލުތަކާއި ދަސްކުރުމުގެ ޒިންމާ ނަގައި، ސްކޫލާއި، ރަށާއި، ޤައުމަށް ފަރުވާތެރިވަމެވެ."
+            }
+        },
+        {
+            "title": {
+                "en": "Excellence",
+                "dv": "މޮޅުކަން"
+            },
+            "description": {
+                "en": "We aim high, work hard and keep improving in our studies, sports and the arts.",
+                "dv": "ކިޔެވުމާއި، ކުޅިވަރާއި، ފަންނުގައި މަތީ އަމާޒުތައް ކަނޑައަޅައި، ބުރަ މަސައްކަތުން ކުރިއަރަމުން ދަމެވެ."
+            }
+        },
+        {
+            "title": {
+                "en": "Integrity",
+                "dv": "ތެދުވެރިކަން"
+            },
+            "description": {
+                "en": "We are honest and fair, and we do the right thing even when no one is watching.",
+                "dv": "ތެދުވެރިކަމާއި ޢަދުލުވެރިކަމާއެކު، އެއްވެސް މީހަކު ނުދެކުނު ނަމަވެސް ރަނގަޅު ކަން ކުރަމެވެ."
+            }
+        }
+    ]
+}
