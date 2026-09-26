@@ -61,6 +61,58 @@ export const school = {
         en: 'Building a generation for a successful life.',
         dv: 'ކާމިޔާބު ދިރިއުޅުމަކަށް ޖީލެއް ބިނާކުރުން.',
     } satisfies Bilingual,
+    coreValues: [
+        {
+            title: {
+                en: 'Faith',
+                dv: 'އީމާންތެރިކަން',
+            },
+            description: {
+                en: 'We uphold Islamic principles and values in everything we do, at school and beyond.',
+                dv: 'ސްކޫލުގައާއި ބޭރުގައި، ހުރިހާ ކަމެއްގައި އިސްލާމީ އުޞޫލުތަކާއި ރިވެތި އަގުތައް ހިފަހައްޓަމެވެ.',
+            },
+        },
+        {
+            title: {
+                en: 'Respect',
+                dv: 'އިޙްތިރާމް',
+            },
+            description: {
+                en: 'We treat every student, teacher, parent and visitor with kindness and dignity.',
+                dv: 'ކޮންމެ ދަރިވަރަކަށާއި، މުދައްރިސަކަށާއި، ބެލެނިވެރިއަކަށާއި، ޒިޔާރަތްކުރާ ކޮންމެ މީހަކަށް އޯގާތެރިކަމާއި ޝަރަފުވެރިކަމާއެކު މުޢާމަލާތްކުރަމެވެ.',
+            },
+        },
+        {
+            title: {
+                en: 'Responsibility',
+                dv: 'ޒިންމާދާރުކަން',
+            },
+            description: {
+                en: 'We own our actions and our learning, and we care for our school, our island and our nation.',
+                dv: 'އަމިއްލަ ޢަމަލުތަކާއި ދަސްކުރުމުގެ ޒިންމާ ނަގައި، ސްކޫލާއި، ރަށާއި، ޤައުމަށް ފަރުވާތެރިވަމެވެ.',
+            },
+        },
+        {
+            title: {
+                en: 'Excellence',
+                dv: 'މޮޅުކަން',
+            },
+            description: {
+                en: 'We aim high, work hard and keep improving in our studies, sports and the arts.',
+                dv: 'ކިޔެވުމާއި، ކުޅިވަރާއި، ފަންނުގައި މަތީ އަމާޒުތައް ކަނޑައަޅައި، ބުރަ މަސައްކަތުން ކުރިއަރަމުން ދަމެވެ.',
+            },
+        },
+        {
+            title: {
+                en: 'Integrity',
+                dv: 'ތެދުވެރިކަން',
+            },
+            description: {
+                en: 'We are honest and fair, and we do the right thing even when no one is watching.',
+                dv: 'ތެދުވެރިކަމާއި ޢަދުލުވެރިކަމާއެކު، އެއްވެސް މީހަކު ނުދެކުނު ނަމަވެސް ރަނގަޅު ކަން ކުރަމެވެ.',
+            },
+        },
+    ] as { title: Bilingual; description: Bilingual }[],
     principal: {
         name: {
             en: 'Aishath Rifga',

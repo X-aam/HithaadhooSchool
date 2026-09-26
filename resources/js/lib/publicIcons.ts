@@ -39,6 +39,7 @@ export {
     Bus,
     FlaskConical,
     Quote,
+    Check,
     Send,
     Sparkles,
     Star,

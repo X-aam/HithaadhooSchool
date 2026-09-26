@@ -18,6 +18,9 @@ import { school } from '@/lib/sampleData';
 const { t, pick, messages } = useLocale();
 const page = usePage();
 
+// The homepage ends in its own tinted band, so the footer sits flush against it.
+const flush = computed(() => page.component === 'public/Home');
+
 interface CustomNavItem {
     id: number;
     label: LocalizedText;
@@ -40,20 +43,20 @@ const quickLinks = computed<{ label: LocalizedText; href: string }[]>(() => {
     const custom = page.props.siteNavigation as CustomNavItem[] | null;
 
     if (!custom || !custom.length) {
-return defaultQuickLinks;
-}
+        return defaultQuickLinks;
+    }
 
     const links: { label: LocalizedText; href: string }[] = [];
 
     for (const item of custom) {
         if (item.href) {
-links.push({ label: item.label, href: item.href });
-}
+            links.push({ label: item.label, href: item.href });
+        }
 
         for (const child of item.children ?? []) {
             if (child.href) {
-links.push({ label: child.label, href: child.href });
-}
+                links.push({ label: child.label, href: child.href });
+            }
         }
     }
 
@@ -78,15 +81,28 @@ function subscribe() {
 </script>
 
 <template>
-    <footer class="mt-20 border-t border-border bg-muted/40">
-        <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
+    <footer
+        class="border-t border-border bg-muted/40"
+        :class="flush ? '' : 'mt-20'"
+    >
+        <div
+            class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8"
+        >
             <!-- Brand -->
             <div class="space-y-4">
                 <Link href="/" class="flex items-center gap-2.5">
-                    <img src="/images/logo.png" :alt="t(messages.site.name)" class="size-10 shrink-0 object-contain" />
-                    <span class="font-bold text-foreground">{{ t(messages.site.name) }}</span>
+                    <img
+                        src="/images/logo.png"
+                        :alt="t(messages.site.name)"
+                        class="size-10 shrink-0 object-contain"
+                    />
+                    <span class="font-bold text-foreground">{{
+                        t(messages.site.name)
+                    }}</span>
                 </Link>
-                <p class="max-w-xs text-sm text-muted-foreground">{{ t(messages.site.tagline) }}</p>
+                <p class="max-w-xs text-sm text-muted-foreground">
+                    {{ t(messages.site.tagline) }}
+                </p>
                 <div class="flex gap-2">
                     <a
                         v-for="s in social"
@@ -104,10 +120,15 @@ function subscribe() {
 
             <!-- Quick links -->
             <div>
-                <h3 class="mb-4 text-sm font-semibold text-foreground">{{ t(messages.footer.quickLinks) }}</h3>
+                <h3 class="mb-4 text-sm font-semibold text-foreground">
+                    {{ t(messages.footer.quickLinks) }}
+                </h3>
                 <ul class="space-y-2.5">
                     <li v-for="l in quickLinks" :key="l.href">
-                        <Link :href="l.href" class="text-sm text-muted-foreground transition hover:text-brand hover:underline">
+                        <Link
+                            :href="l.href"
+                            class="text-sm text-muted-foreground transition hover:text-brand hover:underline"
+                        >
                             {{ t(l.label) }}
                         </Link>
                     </li>
@@ -116,28 +137,50 @@ function subscribe() {
 
             <!-- Contact -->
             <div>
-                <h3 class="mb-4 text-sm font-semibold text-foreground">{{ t(messages.footer.contactUs) }}</h3>
+                <h3 class="mb-4 text-sm font-semibold text-foreground">
+                    {{ t(messages.footer.contactUs) }}
+                </h3>
                 <ul class="space-y-3 text-sm text-muted-foreground">
                     <li class="flex items-start gap-2.5">
                         <MapPin class="mt-0.5 size-4 shrink-0 text-brand" />
-                        <span dir="auto">{{ pick(school.contact.address) }}</span>
+                        <span dir="auto">{{
+                            pick(school.contact.address)
+                        }}</span>
                     </li>
                     <li class="flex items-center gap-2.5">
                         <Phone class="size-4 shrink-0 text-brand" />
-                        <a :href="`tel:${school.contact.phone}`" class="hover:text-brand" dir="ltr">{{ school.contact.phone }}</a>
+                        <a
+                            :href="`tel:${school.contact.phone}`"
+                            class="hover:text-brand"
+                            dir="ltr"
+                            >{{ school.contact.phone }}</a
+                        >
                     </li>
                     <li class="flex items-center gap-2.5">
                         <Mail class="size-4 shrink-0 text-brand" />
-                        <a :href="`mailto:${school.contact.email}`" class="hover:text-brand" dir="ltr">{{ school.contact.email }}</a>
+                        <a
+                            :href="`mailto:${school.contact.email}`"
+                            class="hover:text-brand"
+                            dir="ltr"
+                            >{{ school.contact.email }}</a
+                        >
                     </li>
                 </ul>
             </div>
 
             <!-- Newsletter -->
             <div>
-                <h3 class="mb-4 text-sm font-semibold text-foreground">{{ t(messages.footer.newsletter) }}</h3>
-                <p class="mb-3 text-sm text-muted-foreground">{{ t(messages.footer.newsletterText) }}</p>
-                <form v-if="!subscribed" class="flex gap-2" @submit.prevent="subscribe">
+                <h3 class="mb-4 text-sm font-semibold text-foreground">
+                    {{ t(messages.footer.newsletter) }}
+                </h3>
+                <p class="mb-3 text-sm text-muted-foreground">
+                    {{ t(messages.footer.newsletterText) }}
+                </p>
+                <form
+                    v-if="!subscribed"
+                    class="flex gap-2"
+                    @submit.prevent="subscribe"
+                >
                     <input
                         v-model="email"
                         type="email"
@@ -146,19 +189,31 @@ function subscribe() {
                         class="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/30"
                         dir="auto"
                     />
-                    <button type="submit" class="grid size-10 shrink-0 place-items-center rounded-lg bg-brand text-brand-foreground transition hover:opacity-90" :aria-label="t(messages.footer.subscribe)">
+                    <button
+                        type="submit"
+                        class="grid size-10 shrink-0 place-items-center rounded-lg bg-brand text-brand-foreground transition hover:opacity-90"
+                        :aria-label="t(messages.footer.subscribe)"
+                    >
                         <Send class="size-4 rtl:-scale-x-100" />
                     </button>
                 </form>
-                <p v-else class="rounded-lg bg-brand-muted px-3 py-2.5 text-sm font-medium text-brand">
+                <p
+                    v-else
+                    class="rounded-lg bg-brand-muted px-3 py-2.5 text-sm font-medium text-brand"
+                >
                     {{ t(messages.contact.sent) }}
                 </p>
             </div>
         </div>
 
         <div class="border-t border-border">
-            <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-muted-foreground sm:flex-row sm:px-6 lg:px-8">
-                <p>© {{ new Date().getFullYear() }} {{ t(messages.site.name) }}. {{ t(messages.footer.rights) }}</p>
+            <div
+                class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-muted-foreground sm:flex-row sm:px-6 lg:px-8"
+            >
+                <p>
+                    © {{ new Date().getFullYear() }}
+                    {{ t(messages.site.name) }}. {{ t(messages.footer.rights) }}
+                </p>
                 <p dir="auto">{{ pick(school.contact.officeHours) }}</p>
             </div>
         </div>

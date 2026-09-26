@@ -4,6 +4,7 @@ import ContentEditorShell from '@/components/admin/ContentEditorShell.vue';
 import { clone } from '@/components/admin/schema';
 import type { FieldDef } from '@/components/admin/schema';
 import SchemaField from '@/components/admin/SchemaField.vue';
+import SchemaListEditor from '@/components/admin/SchemaListEditor.vue';
 import { school } from '@/lib/sampleData';
 
 const props = defineProps<{ section: string; label: string; value: any }>();
@@ -11,6 +12,9 @@ const props = defineProps<{ section: string; label: string; value: any }>();
 const form = useForm<{ value: Record<string, any> }>({
     value: props.value ?? clone(school as unknown as Record<string, any>),
 });
+
+// Content saved before core values existed has no list yet.
+form.value.coreValues ??= [];
 
 const statsFields: FieldDef[] = [
     { key: 'established', type: 'number', label: 'Year established' },
@@ -24,6 +28,16 @@ const textFields: FieldDef[] = [
     { key: 'mission', type: 'bilingualText', label: 'Mission' },
     { key: 'vision', type: 'bilingualText', label: 'Vision' },
 ];
+
+const coreValueFields: FieldDef[] = [
+    { key: 'title', type: 'bilingual', label: 'Value' },
+    { key: 'description', type: 'bilingualText', label: 'Description' },
+];
+
+const newCoreValue = () => ({
+    title: { en: '', dv: '' },
+    description: { en: '', dv: '' },
+});
 
 const principalFields: FieldDef[] = [
     { key: 'name', type: 'bilingual', label: 'Name' },
@@ -93,6 +107,27 @@ function save() {
                     :field="f"
                 />
             </div>
+        </section>
+
+        <section
+            class="rounded-2xl border border-border bg-background p-6 shadow-sm"
+        >
+            <h2
+                class="mb-1 text-sm font-semibold tracking-wide text-muted-foreground uppercase"
+            >
+                Core values
+            </h2>
+            <p class="mb-4 text-sm text-muted-foreground">
+                Shown on the homepage under the mission and vision. The section
+                is hidden while this list is empty.
+            </p>
+            <SchemaListEditor
+                :items="form.value.coreValues"
+                :fields="coreValueFields"
+                :new-item="newCoreValue"
+                title-key="title"
+                add-label="Add core value"
+            />
         </section>
 
         <section

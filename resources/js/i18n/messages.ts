@@ -76,13 +76,16 @@ export const messages = {
         motto: { en: 'Our Motto', dv: 'ޝިޢާރު' },
         missionTitle: { en: 'Our Mission', dv: 'އަޅުގަނޑުމެންގެ އަމާޒު' },
         visionTitle: { en: 'Our Vision', dv: 'އަޅުގަނޑުމެންގެ ތަޞައްވުރު' },
+        coreValuesTitle: {
+            en: 'Our Core Values',
+            dv: 'އަޅުގަނޑުމެންގެ އަސާސީ އަގުތައް',
+        },
         quickLinks: { en: 'Quick links', dv: 'ފަސޭހަ ލިންކުތައް' },
         featuredNews: { en: 'Latest news', dv: 'އެންމެ ފަހުގެ ޚަބަރު' },
         latestAnnouncements: {
             en: 'Latest announcements',
             dv: 'އެންމެ ފަހުގެ އިޢުލާން',
         },
-        applyNow: { en: 'Apply now', dv: 'ފޯމު ހުށަހަޅުއްވާ' },
     },
     calendar: {
         month: { en: 'Month', dv: 'މަސް' },
@@ -105,13 +108,7 @@ export const messages = {
         selectClass: { en: 'Class', dv: 'ކްލާސް' },
     },
     contact: {
-        title: { en: 'Get in touch', dv: 'ގުޅުއްވުމަށް' },
-        name: { en: 'Full name', dv: 'ފުރިހަމަ ނަން' },
         email: { en: 'Email address', dv: 'އީމެއިލް' },
-        subject: { en: 'Subject', dv: 'މައުޟޫޢު' },
-        message: { en: 'Message', dv: 'މެސެޖު' },
-        send: { en: 'Send message', dv: 'މެސެޖު ފޮނުއްވާ' },
-        sending: { en: 'Sending…', dv: 'ފޮނުވަނީ…' },
         sent: {
             en: 'Thank you! We will reply shortly.',
             dv: 'ޝުކުރިއްޔާ! އަޅުގަނޑުމެން ވަރަށް އަވަހަށް ޖަވާބުދޭނަން.',
@@ -120,14 +117,6 @@ export const messages = {
         phone: { en: 'Phone', dv: 'ފޯނު' },
         officeHours: { en: 'Office hours', dv: 'އޮފީސް ގަޑިތައް' },
         followUs: { en: 'Follow us', dv: 'ފޮލޯކުރައްވާ' },
-        required: {
-            en: 'This field is required.',
-            dv: 'މި ގޮޅި ފުރިހަމަކުރައްވާ.',
-        },
-        invalidEmail: {
-            en: 'Please enter a valid email.',
-            dv: 'ސައްޙަ އީމެއިލެއް ލިޔުއްވާ.',
-        },
     },
     publishing: {
         intro: {

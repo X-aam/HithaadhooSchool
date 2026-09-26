@@ -12,6 +12,7 @@ import {
     Megaphone,
     Phone,
     Pin,
+    Check,
     Quote,
     Target,
     UsersRound,
@@ -35,6 +36,10 @@ const props = defineProps<{
 
 const heroSlides = computed(() => props.hero ?? defaultHero);
 const school = computed(() => props.school ?? defaultSchool);
+
+const coreValues = computed(() =>
+    (school.value.coreValues ?? []).filter((v) => pick(v.title)),
+);
 
 /* Swap to a stable placeholder if a school photo hasn't been added yet. */
 function onImgError(e: Event, fallback: string) {
@@ -249,16 +254,6 @@ const quickLinks = [
                 </Transition>
                 <div class="mt-8 flex flex-wrap gap-3">
                     <Link
-                        href="/contact"
-                        class="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-brand-foreground shadow-lg transition hover:scale-[1.02] hover:brightness-110"
-                    >
-                        {{ t(messages.home.applyNow) }}
-                        <ArrowRight
-                            class="size-4"
-                            :class="isRtl ? 'rotate-180' : ''"
-                        />
-                    </Link>
-                    <Link
                         href="/announcements"
                         class="inline-flex items-center gap-2 rounded-full bg-white/15 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/25"
                     >
@@ -351,7 +346,7 @@ const quickLinks = [
     </section>
 
     <!-- Welcome / Principal + Mission & Vision -->
-    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+    <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-14">
         <div class="grid gap-12 lg:grid-cols-5">
             <Reveal class="lg:col-span-3">
                 <span
@@ -434,16 +429,63 @@ const quickLinks = [
         </div>
     </section>
 
+    <!-- Core values -->
+    <section
+        v-if="coreValues.length"
+        class="border-t border-border bg-muted/40"
+    >
+        <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-14">
+            <Reveal>
+                <h2
+                    class="text-center text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
+                >
+                    {{ t(messages.home.coreValuesTitle) }}
+                </h2>
+            </Reveal>
+            <ul class="mt-8 grid gap-x-16 gap-y-7 md:grid-cols-2">
+                <Reveal
+                    v-for="(value, i) in coreValues"
+                    :key="i"
+                    as="li"
+                    :delay="(i % 2) * 80"
+                    class="flex gap-4"
+                >
+                    <span
+                        class="grid size-9 shrink-0 place-items-center rounded-full bg-brand text-brand-foreground shadow-sm shadow-brand/30"
+                        aria-hidden="true"
+                    >
+                        <Check class="size-5" stroke-width="3" />
+                    </span>
+                    <div class="min-w-0">
+                        <h3
+                            class="text-lg font-bold text-foreground"
+                            dir="auto"
+                        >
+                            {{ pick(value.title) }}
+                        </h3>
+                        <p
+                            v-if="pick(value.description)"
+                            class="mt-2 text-[0.95rem] leading-7 text-foreground/75"
+                            dir="auto"
+                        >
+                            {{ pick(value.description) }}
+                        </p>
+                    </div>
+                </Reveal>
+            </ul>
+        </div>
+    </section>
+
     <!-- Quick links -->
-    <section class="relative border-y border-border bg-muted/40">
+    <section class="relative border-t border-border bg-muted/40">
         <div class="bg-dots pointer-events-none absolute inset-0 opacity-30" />
-        <div class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div class="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
             <h2
-                class="mb-6 text-sm font-semibold tracking-wide text-muted-foreground uppercase"
+                class="mb-4 text-sm font-semibold tracking-wide text-muted-foreground uppercase"
             >
                 {{ t(messages.home.quickLinks) }}
             </h2>
-            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <Reveal
                     v-for="(q, i) in quickLinks"
                     :key="q.href"
@@ -451,12 +493,12 @@ const quickLinks = [
                 >
                     <Link
                         :href="q.href"
-                        class="group flex items-center gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-lg hover:shadow-brand/10"
+                        class="group flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-3 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-lg hover:shadow-brand/10"
                     >
                         <span
-                            class="grid size-12 place-items-center rounded-xl bg-brand-muted text-brand transition duration-300 group-hover:scale-105 group-hover:bg-brand group-hover:text-brand-foreground"
+                            class="grid size-10 place-items-center rounded-lg bg-brand-muted text-brand transition duration-300 group-hover:scale-105 group-hover:bg-brand group-hover:text-brand-foreground"
                         >
-                            <component :is="q.icon" class="size-6" />
+                            <component :is="q.icon" class="size-5" />
                         </span>
                         <span
                             class="font-semibold text-foreground"
@@ -474,8 +516,11 @@ const quickLinks = [
     </section>
 
     <!-- Featured news -->
-    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-        <div class="mb-8 flex items-end justify-between gap-4">
+    <section
+        v-if="featured.length"
+        class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"
+    >
+        <div class="mb-6 flex items-end justify-between gap-4">
             <div>
                 <span
                     class="inline-flex items-center gap-2 text-xs font-bold tracking-[0.18em] text-brand uppercase"
@@ -555,9 +600,12 @@ const quickLinks = [
     </section>
 
     <!-- Latest announcements -->
-    <section class="border-t border-border bg-muted/40">
-        <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-            <div class="mb-8 flex items-end justify-between gap-4">
+    <section
+        v-if="latestAnnouncements.length"
+        class="border-t border-border bg-muted/40"
+    >
+        <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <div class="mb-6 flex items-end justify-between gap-4">
                 <div>
                     <span
                         class="inline-flex items-center gap-2 text-xs font-bold tracking-[0.18em] text-brand uppercase"
