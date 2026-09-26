@@ -76,10 +76,7 @@ export const messages = {
         motto: { en: 'Our Motto', dv: 'ޝިޢާރު' },
         missionTitle: { en: 'Our Mission', dv: 'އަޅުގަނޑުމެންގެ އަމާޒު' },
         visionTitle: { en: 'Our Vision', dv: 'އަޅުގަނޑުމެންގެ ތަޞައްވުރު' },
-        coreValuesTitle: {
-            en: 'Our Core Values',
-            dv: 'އަޅުގަނޑުމެންގެ އަސާސީ އަގުތައް',
-        },
+        coreValuesTitle: { en: 'Core Values', dv: 'ކޯވެލިއުސް' },
         quickLinks: { en: 'Quick links', dv: 'ފަސޭހަ ލިންކުތައް' },
         featuredNews: { en: 'Latest news', dv: 'އެންމެ ފަހުގެ ޚަބަރު' },
         latestAnnouncements: {
