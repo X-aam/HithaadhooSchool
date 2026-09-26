@@ -1,3 +1,4 @@
+import { router } from '@inertiajs/vue3';
 import type { ComputedRef, Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 import type { Appearance, ResolvedAppearance } from '@/types';
@@ -64,10 +65,17 @@ const prefersDark = (): boolean => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 
-const handleSystemThemeChange = () => {
-    const currentAppearance = getStoredAppearance();
+/**
+ * Dark mode only applies inside the CMS (admin, settings, teams and the team
+ * dashboard); the public site always stays light. Keep in sync with the
+ * HandleAppearance middleware.
+ */
+const isCmsPath = (path: string): boolean =>
+    /^\/(admin|settings|teams)(\/|$)/.test(path) ||
+    /^\/[^/]+\/dashboard(\/|$)/.test(path);
 
-    updateTheme(currentAppearance || 'light');
+const applyThemeFor = (path: string) => {
+    updateTheme(isCmsPath(path) ? getStoredAppearance() || 'light' : 'light');
 };
 
 export function initializeTheme(): void {
@@ -75,12 +83,20 @@ export function initializeTheme(): void {
         return;
     }
 
-    // Initialize theme from saved preference or default to light...
-    const savedAppearance = getStoredAppearance();
-    updateTheme(savedAppearance || 'light');
+    // Initialize theme from saved preference (CMS only) or default to light...
+    applyThemeFor(window.location.pathname);
+
+    // Moving between the public site and the CMS happens without a reload...
+    router.on('navigate', (event) => {
+        applyThemeFor(
+            new URL(event.detail.page.url, window.location.origin).pathname,
+        );
+    });
 
     // Set up system theme change listener...
-    mediaQuery()?.addEventListener('change', handleSystemThemeChange);
+    mediaQuery()?.addEventListener('change', () =>
+        applyThemeFor(window.location.pathname),
+    );
 }
 
 const appearance = ref<Appearance>('light');

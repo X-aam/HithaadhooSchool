@@ -16,7 +16,14 @@ class HandleAppearance
      */
     public function handle(Request $request, Closure $next): Response
     {
-        View::share('appearance', $request->cookie('appearance') ?? 'system');
+        /*
+         * Dark mode is a CMS preference. The public site has no switch and is
+         * always rendered light, even for staff who chose dark in the CMS.
+         * Keep this path list in sync with isCmsPath() in useAppearance.ts.
+         */
+        $isCms = $request->is('admin', 'admin/*', 'settings', 'settings/*', 'teams', 'teams/*', '*/dashboard');
+
+        View::share('appearance', $isCms ? ($request->cookie('appearance') ?? 'light') : 'light');
 
         return $next($request);
     }

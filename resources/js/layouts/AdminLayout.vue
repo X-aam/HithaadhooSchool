@@ -12,10 +12,13 @@ import {
     ExternalLink,
     LogOut,
     Menu,
+    Moon,
+    Sun,
     X,
 } from '@lucide/vue';
 import { computed, ref } from 'vue';
 import { Toaster } from '@/components/ui/sonner';
+import { useAppearance } from '@/composables/useAppearance';
 import { dashboard, logout as logoutRoute } from '@/routes';
 import type { BreadcrumbItem } from '@/types/navigation';
 
@@ -138,6 +141,13 @@ function isActive(match: RegExp) {
 
 function isSection(key: string) {
     return currentUrl.value.includes(`/admin/content/${key}`);
+}
+
+const { resolvedAppearance, updateAppearance } = useAppearance();
+const isDark = computed(() => resolvedAppearance.value === 'dark');
+
+function toggleDarkMode() {
+    updateAppearance(isDark.value ? 'light' : 'dark');
 }
 
 function logout() {
@@ -273,6 +283,36 @@ function logout() {
                                 {{ user?.email }}
                             </div>
                         </div>
+                        <button
+                            type="button"
+                            role="switch"
+                            :aria-checked="isDark"
+                            class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground/70 transition hover:bg-muted hover:text-foreground"
+                            @click="toggleDarkMode"
+                        >
+                            <component
+                                :is="isDark ? Sun : Moon"
+                                class="size-5"
+                            />
+                            <span class="flex-1 text-start">Dark mode</span>
+                            <span
+                                class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors"
+                                :class="
+                                    isDark
+                                        ? 'bg-brand'
+                                        : 'bg-muted-foreground/30'
+                                "
+                            >
+                                <span
+                                    class="inline-block size-4 rounded-full bg-background shadow-sm transition-transform"
+                                    :class="
+                                        isDark
+                                            ? 'translate-x-4.5'
+                                            : 'translate-x-0.5'
+                                    "
+                                />
+                            </span>
+                        </button>
                         <button
                             type="button"
                             class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground/70 transition hover:bg-muted hover:text-foreground"
